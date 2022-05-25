@@ -13,7 +13,7 @@
                         <h5 class="text-center" style="font-weight: 600;">{{ env('APP_NAME') }}</h5>
                             <div class="form-group mb-2">
                                 <label class="form-label" style="font-weight: 600;">Username</label>
-                                <input class="form-control" type="text" placeholder="Username" name="username" required>
+                                <input class="form-control" type="text" placeholder="Username" name="username" id="username" required>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="form-group">
@@ -23,7 +23,7 @@
                                 <div class="clearfix"></div>
                             </div>
                             <div class="mt-4 d-grid gap-2">
-                                <button type="submit" class="btn btn-success">Login</button>
+                                <button type="submit" id="btn-login" class="btn btn-success">Login</button>
                             </div>
                     </div>
                 </div>

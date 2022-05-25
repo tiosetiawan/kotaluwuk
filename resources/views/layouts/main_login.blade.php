@@ -23,14 +23,15 @@
 </body>
 
 {{-- js --}}
-<script src="/lib/jquery/jquery-3.6.0.js"></script>
+<script src="/lib/jquery/jquery.min.js"></script>
 <script src="/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/lib/sweetalert/sweetalert2.all.min.js"></script>
+<script src="/js/global.js"></script>
 {{-- end js --}}
 
  {{-- looping data js controller --}}
 @foreach ($data['js'] as $dt)
-<link rel="stylesheet" href="{{ $dt }}">
+<script src="{{ $dt }}"></script>
 @endforeach
 
 </html>

@@ -11,8 +11,9 @@ class LoginController extends Controller
         $data['css'] = array(
             '/css/portal.css',  
         );
+        
         $data['js'] = array(
-            
+            '/js/login/login.js'
         );
 
         return view('login.index',[
