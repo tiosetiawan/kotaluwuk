@@ -21,4 +21,23 @@ class LoginController extends Controller
             'data'  => $data
         ]);
    }
+
+   public function tostr(Request $request){
+    $request->validate([
+        'username' => 'required|email:dns',
+        'password' => 'required',
+    ]);
+
+    if($request->input('username')){
+        return response()->json([
+            'success' => true,
+            'message' => $request->input('username')
+        ], 200);
+    }else{
+        return response()->json([
+            'success' => false,
+            'message' => "Gagal Login"
+        ], 200);
+    }
+   }
 }

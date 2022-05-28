@@ -10,6 +10,9 @@
     <link href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap-icons.css">
     {{-- end css --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+     {{-- toastr --}}
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
 
     {{-- looping data css controller --}}
     @foreach ($data['css'] as $dt)
@@ -29,9 +32,24 @@
 <script src="/js/global.js"></script>
 {{-- end js --}}
 
+{{-- toastr js --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+
  {{-- looping data js controller --}}
 @foreach ($data['js'] as $dt)
 <script src="{{ $dt }}"></script>
 @endforeach
+
+<script>
+    $(document).ready(function() {
+        toastr.options.timeOut = 10000;
+        @if (Session::has('error'))
+            toastr.error('{{ Session::get('error') }}');
+        @elseif(Session::has('success'))
+            toastr.success('{{ Session::get('success') }}');
+        @endif
+    });
+
+</script>
 
 </html>
