@@ -53,3 +53,5 @@ function notifNoAuto(data) {
       timer: 2000,
     });
   }
+
+  console.log(localStorage.getItem('token'))

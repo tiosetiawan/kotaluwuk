@@ -1,43 +1,56 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
-    $("#btn_login").click( function() {
+    $("#btn_login").click(function () {
 
-       var username = $("#username").val();
-       var token = $("meta[name='csrf-token']").attr("content");
+        var username = $("#username").val();
+        var password = $("#password").val();
+        var token    = $("meta[name='csrf-token']").attr("content");
 
-       $("#btn_loding").removeClass('d-none');
-       $("#btn_login").addClass('d-none');
+        $("#btn_loding").removeClass('d-none');
+        $("#btn_login").addClass('d-none');
 
-       var kode = 1;
-       $.ajax({
+        var kode = 1;
+        $.ajax({
+            url: "/store",
+            type: "POST",
+            dataType: "JSON",
+            cache: false,
+            data: {
+                username: username,
+                password: password,
+                _token  : token,
+                kode    : kode
+            },
+            
+            success: function (response) {
 
-        url: "/tostr",
-        type: "POST",
-        dataType: "JSON",
-        cache: false,
-        data: {
-            "username": username,
-            "_token": token,
-            "kode"  : kode
-        },
+                if (response.success) {
+                    toastr.success(response.message, '', {
+                        timeOut: 1500,
+                        onHidden: function() {
+                            window.location.href = '/dashboard';
+                        }
+                    });
+                } else {
+                    toastr.error(response.message);
+                    $("#btn_loding").addClass('d-none');
+                    $("#btn_login").removeClass('d-none');
+                }
+            },
 
-        success:function(response){
-
-            if (response.success) {
-                toastr.success(response.message);
-            } else {
-                toastr.error(response.message);
+            error: function (response,error) {
                 $("#btn_loding").addClass('d-none');
                 $("#btn_login").removeClass('d-none');
-            } 
-        },
-
-        error:function(response){
-            $("#btn_loding").addClass('d-none');
-            $("#btn_login").removeClass('d-none');
-            toastr.error(response.responseJSON.errors.username);
-            toastr.error(response.responseJSON.errors.password);
-        }
+                var error_user = response.responseJSON.errors.username;
+                var error_pass = response.responseJSON.errors.password;
+                if(error_user){
+                    toastr.error(error_user);
+                }
+                if(error_pass){
+                    toastr.error(error_pass);
+                }
+               
+            },
 
         });
     });

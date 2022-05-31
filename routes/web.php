@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Api\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,18 +21,11 @@ Route::get('/', function () {
 
 // routing login
 Route::get('/login', [LoginController::class, 'index']);
-
-Route::post('/tostr', [LoginController::class, 'tostr']);
+Route::post('/store', [LoginController::class, 'store']);
+Route::post('/logout', [LoginController::class,'destroy']);
 
 // routing admin
-Route::get('/dashboard', function () {
-    $data['css'] = array(
-    );
-    
-    $data['js'] = array(
-    );
-    return view('dashboard.index',[
-        'title' => 'Home',
-        'data'  => $data
-    ]);
-});
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
+
+Route::put('post/publish', [DashboardController::class, 'publish'])->name('post.publish');
+Route::put('post/unpublish', [DashboardController::class, 'unpublish'])->name('post.unpublish');

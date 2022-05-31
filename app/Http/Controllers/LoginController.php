@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
    public function index(){
@@ -22,22 +22,33 @@ class LoginController extends Controller
         ]);
    }
 
-   public function tostr(Request $request){
-    $request->validate([
-        'username' => 'required|email:dns',
-        'password' => 'required',
-    ]);
+   public function store(Request $request){
+        $credentials = $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
 
-    if($request->input('username')){
-        return response()->json([
-            'success' => true,
-            'message' => $request->input('username')
-        ], 200);
-    }else{
-        return response()->json([
-            'success' => false,
-            'message' => "Gagal Login"
-        ], 200);
-    }
+        if(Auth::attempt($credentials)){
+            $request->session()->regenerate();
+            return response()->json([
+                'success' => true,
+                'message' => $request->input('username').' login successfully !',
+            ], 200);
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => "Login failed !"
+            ], 200);
+        }
    }
+
+   public function destroy(Request $request){
+            
+    Auth::logout();
+
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+    return redirect('/login');
+}
+   
 }

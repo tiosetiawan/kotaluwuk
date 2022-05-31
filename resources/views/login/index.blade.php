@@ -21,7 +21,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" style="font-weight: 600;"> Password</label>
-                                    <input class="form-control" type="password" placeholder="Password" name="password"
+                                    <input class="form-control" type="password" placeholder="Password" name="password" id="password"
                                         required>
                                     <div class="clearfix"></div>
                                 </div>
@@ -35,8 +35,8 @@
                         </div>
                     </div>
                 {{-- </form> --}}
-                <div class="container text-footer sticky-bottom">
-                    <hr class="footer">
+                <div class="container text-footer">
+                    <hr>
                     <p align="center">If you have problem in loggin in, please contact our IT
                         Application Development Team 9909</p>
                     <a href="https://imip.co.id/" class="text-success text-decoration-none"><p align="center"> {{ env('APP_FOOTER') }} </p></a>

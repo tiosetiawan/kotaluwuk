@@ -5,8 +5,29 @@
             <div class="nav-item text-nowrap">
                 <form action="/logout" method="post">
                     @csrf
+                    @auth
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Welcome back, {{ auth()->user()->name }}
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="/dashboard"> <i class="bi bi-layout-text-window-reverse"></i> My Dashboard</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <form action="/logout" method="post">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-in-right"></i> Logout</button>
+                                    </form>
+                            </ul>
+                        </li>
+                    @else
                     <button type="submit" class="nav-link px-3 bg-white text-dark border-0"> LOGOUT <i
-                            class="bi bi-box-arrow-right"></i></button>
+                        class="bi bi-box-arrow-right"></i></button>
+                    @endauth
+                   
                 </form>
             </div>
         </div>
