@@ -111,4 +111,46 @@ $(document).ready(function () {
   	});
 
 
+    $(document).on("click", "#delete_btn", function (e) {
+    e.preventDefault();
+    var id    = $(this).attr("data-id");
+    var name  = $(this).attr("data-name");
+    var token = $("meta[name='csrf-token']").attr("content");
+    swal({
+        title: "Anda yakin ?",
+        text: "User data " + name + " akan dihapus ?",
+        type: "question",
+        showCancelButton: true,
+        confirmButtonText: "Ya, hapus !",
+        cancelButtonText: "Tidak, batalkan !",
+    }).then((result) => {
+        if (result.value) {
+        $.ajax({
+          type: "post",
+            url: "/user/"+ id,
+            data: {
+            id_user: id,
+            name   : name,
+            _token    : token,
+           '_method': 'delete'
+            },
+        })
+            .done(function (response) {
+            if (response.success) {
+                $("div#MyModal").modal("hide");
+                notifYesAuto(response.message);
+                table.ajax.reload();
+              }else{
+                  notifNo(response.message);
+              }
+            })
+            .fail(function (res) {
+            alert("Error Response !");
+            console.log("responseText", res.responseText);
+            });
+        }
+    });
+    });
+
+
 });

@@ -55,7 +55,7 @@ class UserController extends Controller
                 })
                 ->addColumn('action', function($row){
                     $actionBtn = "<a id='edit_btn' type='button' class='text-primary' data-id=".$row->id." id='order_btn'><i class='bi bi-pencil-square'></i></a>
-                    <a id='detail_data' type='button' class='text-danger' data-id=".$row->id." id='order_btn'><i class='bi bi-trash3'></i></a>";
+                    <a id='delete_btn' type='button' class='text-danger' data-id=".$row->id." data-name=".$row->name." id='order_btn'><i class='bi bi-trash3'></i></a>";
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])
@@ -163,8 +163,13 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($user, Request $request)
     {
-        //
+        $data = User::find($user);
+        $data->delete();
+        return response()->json([
+            'success' => true,
+            'message' => $request->input('name').' successfully deleted !',
+        ], 200);
     }
 }
