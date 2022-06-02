@@ -91,6 +91,19 @@ return [
             'prefix_indexes' => true,
         ],
 
+        'sqlsrvcherry' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST_CHERRY', 'localhost'),
+            'port' => env('DB_PORT_CHERRY', '1433'),
+            'database' => env('DB_DATABASE_CHERRY', 'forge'),
+            'username' => env('DB_USERNAME_CHERRY', 'forge'),
+            'password' => env('DB_PASSWORD_CHERRY', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
+
     ],
 
     /*

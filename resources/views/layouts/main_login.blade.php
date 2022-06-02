@@ -18,7 +18,8 @@
     @foreach ($data['css'] as $dt)
         <link rel="stylesheet" href="{{ $dt }}">
     @endforeach
-   
+    
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 </head>
 
 <body>

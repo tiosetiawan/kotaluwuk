@@ -9,14 +9,14 @@
     {{-- css --}}
     <link href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap-icons.css">
-    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/global.css">
     {{-- end css --}}
 
     {{-- looping data css controller --}}
     @foreach ($data['css'] as $dt)
         <link rel="stylesheet" href="{{ $dt }}">
     @endforeach
-   
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 </head>
 
 <body>
@@ -28,10 +28,12 @@
                 @yield('container')
         </div>
     </div>
+    @include('layouts.footer')
+    @include('layouts.modal')
 </body>
 
 {{-- js --}}
-<script src="/lib/jquery/jquery-3.6.0.js"></script>
+<script src="/lib/jquery/jquery.min.js"></script>
 <script src="/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/lib/sweetalert/sweetalert2.all.min.js"></script>
 
@@ -40,7 +42,7 @@
 
 {{-- looping data js controller --}}
 @foreach ($data['js'] as $dt)
-<link rel="stylesheet" href="{{ $dt }}">
+<script src="{{ $dt }}"></script>
 @endforeach
 
 </html>

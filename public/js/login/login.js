@@ -38,17 +38,24 @@ $(document).ready(function () {
                 }
             },
 
-            error: function (response,error) {
+            error: function (response) {
+              
+                
                 $("#btn_loding").addClass('d-none');
                 $("#btn_login").removeClass('d-none');
-                var error_user = response.responseJSON.errors.username;
-                var error_pass = response.responseJSON.errors.password;
-                if(error_user){
-                    toastr.error(error_user);
+                if(response.responseJSON.errors){
+                    var error_user = response.responseJSON.errors.username;
+                    var error_pass = response.responseJSON.errors.password;
+                    if(error_user){
+                        toastr.error(error_user);
+                    }
+                    if(error_pass){
+                        toastr.error(error_pass);
+                    }
+                }else{
+                    toastr.error(response.responseJSON.message);
                 }
-                if(error_pass){
-                    toastr.error(error_pass);
-                }
+               
                
             },
 

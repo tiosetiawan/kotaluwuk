@@ -1,9 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+
 class LoginController extends Controller
 {
    public function index(){
@@ -28,6 +31,22 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
+        //login cherry check
+        $response = Http::post(config('app.cherry_service_token'), [
+            'CommandName' => 'RequestToken',
+            'ModelCode' => 'AppUserAccount',
+            'UserName' => $request->input('username'),
+            'Password' => $request->input('password'),
+            'ParameterData' => [],
+        ]);
+
+        if (!$response['Token']) {
+            return response()->json([
+                'success' => false,
+                'message' => $response['Message'],
+            ], 401);
+        } 
+
         if(Auth::attempt($credentials)){
             $request->session()->regenerate();
             return response()->json([
@@ -38,7 +57,7 @@ class LoginController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => "Login failed !"
-            ], 200);
+            ], 401);
         }
    }
 

@@ -7,7 +7,7 @@
     </div>
 
     <td class="text-center">
-        @can('publish menu')
+        {{-- @can('publish menu') --}}
         <form onsubmit="return confirm('Publish post ini?');" action="{{ route('post.publish') }}" method="POST">
         
             @csrf
@@ -15,9 +15,9 @@
             <button type="submit" class="btn btn-sm btn-success">Publish</button>
         </form>
         
-        @endcan
+        {{-- @endcan --}}
         
-        @can('unpublish menu')
+        {{-- @can('unpublish menu') --}}
         <form onsubmit="return confirm('Unpublish post ini?');" action="{{ route('post.unpublish') }}" method="POST">
         
             @csrf
@@ -25,7 +25,7 @@
             <button type="submit" class="btn btn-sm btn-success mt-3">Unpublish</button>
         </form>
         
-        @endcan
+        {{-- @endcan --}}
     
     </td>
 @endsection

@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,12 +21,16 @@ Route::get('/', function () {
 
 
 // routing login
-Route::get('/login', [LoginController::class, 'index']);
+Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
 Route::post('/store', [LoginController::class, 'store']);
 Route::post('/logout', [LoginController::class,'destroy']);
 
-// routing admin
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
+// routing akses admin
+Route::group(['middleware' => ['auth']], function () {
+Route::get('/dashboard', [DashboardController::class, 'index']);
+Route::get('/user/json', [UserController::class, 'getUser']);
+Route::resource('/user', UserController::class);
+});
 
 Route::put('post/publish', [DashboardController::class, 'publish'])->name('post.publish');
 Route::put('post/unpublish', [DashboardController::class, 'unpublish'])->name('post.unpublish');

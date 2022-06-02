@@ -54,4 +54,34 @@ function notifNoAuto(data) {
     });
   }
 
-  console.log(localStorage.getItem('token'))
+  loadingHide();
+  
+  function loadingShow() {
+    $('#loading').show();
+  }
+  
+  function loadingHide() {
+    $('#loading').hide();
+  }
+
+  $(document).ready(function(){
+    // Setting Modal and Sweet Alert 2
+    $("div#MyModal").on('shown.bs.modal',function(e){
+      e.preventDefault();
+      $('body').removeAttr('style');
+    });
+    $("div#MyModal").on('hidden.bs.modal',function(e){
+      e.preventDefault();
+      $('h5#MyModalTitle').empty();
+      $("div#MyModalContent").empty();
+      $("div#MyModalFooter").empty();
+      $('div.modal-dialog').removeClass('modal-lg');
+      $('div.modal-dialog').removeClass('modal-sm');
+    });
+  });
+  $(document).ready(function(){
+    $('#media').carousel({
+      pause: true,
+      interval: false,
+      });
+  });
