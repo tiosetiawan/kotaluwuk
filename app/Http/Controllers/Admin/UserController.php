@@ -93,7 +93,34 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name'       => 'required|string|max:255',
+            'username'   => 'required|string',
+            'email'      => 'required|string',
+            'perusahaan' => 'required|string',
+            'divisi'     => 'required|string',
+        ]);
+
+        $user = User::create([
+            'username'   => $data['username'],
+            'name'       => $data['name'],
+            'email'      => $data['email'],
+            'password'   => '',
+            'perusahaan' => $data['perusahaan'],
+            'divisi'     => $data['divisi'],
+        ]);
+
+        if($user){
+            return response()->json([
+                'success' => true,
+                'message' => $request->input('username').' save successfully !',
+            ], 200);
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => "Failed to save !"
+            ], 401);
+        }
     }
 
     /**

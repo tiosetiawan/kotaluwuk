@@ -74,5 +74,41 @@ $(document).ready(function () {
 		});
 	});
 
+    $(document).on("click", "#save_add_btn", function (e) {
+    	e.preventDefault();
+        var username   = $("#username").val();
+        var name       = $("#name").val();
+        var email      = $("#email").val();
+        var perusahaan = $("#perusahaan").val();
+        var divisi     = $("#divisi").val();
+        var token      = $("meta[name='csrf-token']").attr("content");
+	    $.ajax({
+		    method: "POST",
+		    url: '/user',
+		    cache: false,
+		    data: {
+		        username  : $("#username").val(),
+		        name      : $("#name").val(),
+		        email     : $("#email").val(),
+		        perusahaan: $("#perusahaan").val(),
+		        divisi    : $("#divisi").val(),
+		        _token    : token,
+		      },
+	    })
+      	.done(function (response) {
+	        if (response.success) {
+	          $("div#MyModal").modal("hide");
+	          notifYesAuto(response.message);
+	          table.ajax.reload();
+	        }else{
+                notifNo(response.message);
+            }
+      	})
+      	.fail(function (res) {
+        	alert("Error Response !");
+        	console.log("responseText", res.responseText);
+      	});
+  	});
+
 
 });

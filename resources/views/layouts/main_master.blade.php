@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap-icons.css">
     <link rel="stylesheet" href="/css/global.css">
     {{-- end css --}}
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     {{-- looping data css controller --}}
     @foreach ($data['css'] as $dt)
         <link rel="stylesheet" href="{{ $dt }}">

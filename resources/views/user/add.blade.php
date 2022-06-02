@@ -24,7 +24,7 @@
         </div> 
         <div class="form-group">
             <label class="control-label">Role</label>
-            <input class="form-control form-control-sm" type="text" disabled id="perusahaan">
+            <input class="form-control form-control-sm" type="text" disabled id="role">
         </div> 
     </div>
 </div>
