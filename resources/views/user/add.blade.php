@@ -1,5 +1,3 @@
-
-  
 <div class="row">
     <div class="col-lg">
         <div class="form-group">
@@ -20,6 +18,13 @@
         </div> 
     </div>
     <div class="col-lg">
-        
+        <div class="form-group">
+            <label class="control-label">Divisi</label>
+            <input class="form-control form-control-sm" type="text" disabled id="divisi">
+        </div> 
+        <div class="form-group">
+            <label class="control-label">Role</label>
+            <input class="form-control form-control-sm" type="text" disabled id="perusahaan">
+        </div> 
     </div>
 </div>

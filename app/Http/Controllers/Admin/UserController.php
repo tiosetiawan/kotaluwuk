@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use DataTables;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -37,7 +38,13 @@ class UserController extends Controller
         ]);
     }
 
-    public function getUser(Request $request){
+
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getTable(Request $request){
 
         if ($request->ajax()) {
             $data = User::latest()->get();
@@ -55,6 +62,17 @@ class UserController extends Controller
                 ->make(true);
         }
 
+    }
+
+    public function getUser(Request $request){
+
+        $username = $request->input('username');
+        $data = DB::connection('sqlsrvcherry')->select("SELECT top(1) Name, Nik, Company, OfficeEmailAddress, Department FROM dbo.vw_employee_masterdata where Nik like '%$username' ");
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Berhasil',
+            'data'    => $data
+        ], 200);
     }
 
     /**

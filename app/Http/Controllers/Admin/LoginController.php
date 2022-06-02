@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -31,16 +32,29 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
+        $username = $request->input('username');
+        $password = $request->input('password');
+        $user = User::where('username', $username)->first();
+
+        if(!$user){
+            return response()->json([
+                'success' => false,
+                'message' => 'Username is not registered !',
+            ], 401);
+        }
+
         //login cherry check
-        $response = Http::post(config('app.cherry_service_token'), [
+        $response = Http::post(config('app.token_cherry'), [
             'CommandName' => 'RequestToken',
             'ModelCode' => 'AppUserAccount',
-            'UserName' => $request->input('username'),
-            'Password' => $request->input('password'),
+            'UserName' => $username,
+            'Password' => $password,
             'ParameterData' => [],
         ]);
 
-        if (!$response['Token']) {
+        if (isset($response['Token'])) {
+            $user = $this->insertUser($response, $password);
+        }else{
             return response()->json([
                 'success' => false,
                 'message' => $response['Message'],
@@ -61,13 +75,30 @@ class LoginController extends Controller
         }
    }
 
+    protected function insertUser($response, $password)
+    {
+        $data = [
+            'name'         => $response['Data']['Name'],
+            'token_cherry' => $response['Token'],
+            'username'     => $response['UserName'],
+            'password'     => bcrypt($password),
+            'perusahaan'   => $response['Data']['Company'],
+            'divisi'       => $response['Data']['Organization'],
+            'email'        => $response['Data']['Email'],
+        ];
+        
+        $user = User::where('username', '=', $response['UserName'])
+        ->update($data);
+        return $user;
+    }
+
    public function destroy(Request $request){
             
-    Auth::logout();
+        Auth::logout();
 
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
-    return redirect('/login');
-}
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/login');
+    }
    
 }

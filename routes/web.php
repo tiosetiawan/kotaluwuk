@@ -28,7 +28,8 @@ Route::post('/logout', [LoginController::class,'destroy']);
 // routing akses admin
 Route::group(['middleware' => ['auth']], function () {
 Route::get('/dashboard', [DashboardController::class, 'index']);
-Route::get('/user/json', [UserController::class, 'getUser']);
+Route::get('/user/json', [UserController::class, 'getTable']);
+Route::get('/user/cherry', [UserController::class, 'getUser']);
 Route::resource('/user', UserController::class);
 });
 

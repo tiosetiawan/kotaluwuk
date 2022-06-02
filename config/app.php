@@ -15,7 +15,7 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
-    'cherry_service_token' => env('CHERRY_TOKEN', "http://192.168.234.113/api/common/RequestAuthenticationToken"),
+    'token_cherry' => env('CHERRY_TOKEN', "http://192.168.234.113/api/common/RequestAuthenticationToken"),
 
     /*
     |--------------------------------------------------------------------------
