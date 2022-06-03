@@ -21,12 +21,31 @@ class PermissionDemoSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // create permissions
-        Permission::create(['name' => 'view menu']);
-        Permission::create(['name' => 'create menu']);
-        Permission::create(['name' => 'edit menu']);
-        Permission::create(['name' => 'delete menu']);
-        Permission::create(['name' => 'publish menu']);
-        Permission::create(['name' => 'unpublish menu']);
+        Permission::create([
+            'name'      => 'user-index',
+            'menu_name' => 'User',
+        ]);
+        Permission::create([
+            'name'      => 'user-store',
+            'menu_name' => 'User',
+        ]);
+        Permission::create([
+            'name'      => 'user-edits',
+            'menu_name' => 'User',
+        ]);
+        Permission::create([
+            'name'      => 'user-destroy',
+            'menu_name' => 'User',
+        ]);
+        
+        Permission::create([
+            'name' => 'publish menu',
+            'menu_name' => 'Publish',
+        ]);
+        Permission::create([
+            'name' => 'unpublish menu',
+            'menu_name' => 'UnPublish',
+        ]);
 
         $user1 = User::factory()->create([
             'name'       => 'ROZUL IMAM',
@@ -60,23 +79,21 @@ class PermissionDemoSeeder extends Seeder
 
         //create roles and assign existing permissions
         $writerRole = User::where('username', '88101731')->first();
-        $writerRole->givePermissionTo('view menu');
-        $writerRole->givePermissionTo('create menu');
-        $writerRole->givePermissionTo('edit menu');
-        $writerRole->givePermissionTo('delete menu');
+        $writerRole->givePermissionTo('user-index');
+        $writerRole->givePermissionTo('user-store');
+        $writerRole->givePermissionTo('user-edits');
 
         $adminRole =  User::where('username', '88100085')->first();
-        $adminRole->givePermissionTo('view menu');
-        $adminRole->givePermissionTo('create menu');
-        $adminRole->givePermissionTo('edit menu');
-        $adminRole->givePermissionTo('delete menu');
+        $adminRole->givePermissionTo('user-index');
+        $adminRole->givePermissionTo('user-store');
+        $adminRole->givePermissionTo('user-edits');
         $adminRole->givePermissionTo('publish menu');
 
         $superadminRole =  User::where('username', '88102332')->first();
-        $superadminRole->givePermissionTo('view menu');
-        $superadminRole->givePermissionTo('create menu');
-        $superadminRole->givePermissionTo('edit menu');
-        $superadminRole->givePermissionTo('delete menu');
+        $superadminRole->givePermissionTo('user-index');
+        $superadminRole->givePermissionTo('user-store');
+        $superadminRole->givePermissionTo('user-edits');
+        $superadminRole->givePermissionTo('user-destroy');
         $superadminRole->givePermissionTo('publish menu');
         $superadminRole->givePermissionTo('unpublish menu');
         // gets all permissions via Gate::before rule

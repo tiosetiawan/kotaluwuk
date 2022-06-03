@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 
@@ -16,9 +17,7 @@ use App\Http\Controllers\Admin\UserController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [LoginController::class, 'index']);
 
 
 // routing login
@@ -29,11 +28,11 @@ Route::post('/logout', [LoginController::class,'destroy']);
 // routing akses admin
 Route::group(['middleware' => ['auth']], function () {
 Route::get('/dashboard', [DashboardController::class, 'index']);
-Route::get('/user/json', [UserController::class, 'getTable']);
 
-// get datables
+// get datatables
 Route::get('/user/json', [UserController::class, 'getTable']);
 Route::get('/roles/json', [RoleController::class, 'getTable']);
+Route::get('/permissions/json', [PermissionController::class, 'getTable']);
 
 // get data cherry
 Route::get('/user/cherry', [UserController::class, 'getUser']);
@@ -41,7 +40,10 @@ Route::get('/user/cherry', [UserController::class, 'getUser']);
 // resource
 Route::resource('/user', UserController::class);
 Route::resource('/roles', RoleController::class);
+Route::resource('/permissions', PermissionController::class);
 });
 
+
+// testing spatie
 Route::put('post/publish', [DashboardController::class, 'publish'])->name('post.publish');
 Route::put('post/unpublish', [DashboardController::class, 'unpublish'])->name('post.unpublish');

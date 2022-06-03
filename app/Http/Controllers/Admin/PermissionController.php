@@ -4,10 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use DataTables;
-
-class RoleController extends Controller
+class PermissionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,22 +20,25 @@ class RoleController extends Controller
             '/lib/datatables/dataTables.bootstrap5.min.css',
 			'/lib/select/component-chosen.min.css',
             '/lib/select/bootstrap-chosen.css',  
+            '/lib/iconpicker/css/bootstrapicons-iconpicker.css'
         );
         
         $data['js'] = array(
             '/lib/datatables/datatables.min.js',
             '/lib/datatables/dataTables.bootstrap5.min.js',
             '/lib/select/chosen.jquery.min.js', 
-            '/js/master/role.js'
+            '/lib/iconpicker/js/bootstrapicon-iconpicker.js',
+            '/js/master/permission.js'
         );
-        return view('role.index',[
-            'title'  => 'Roles',
-            'header' => '<i class="bi bi-sliders2-vertical"></i>&nbsp;<b>Data Roles</b>',
+
+       return view('permission.index',[
+            'title'  => 'Permissions',
+            'header' => '<i class="bi bi-sliders2-vertical"></i>&nbsp;<b>Data Permissions</b>',
             'data'   => $data,
-        ]);
+       ]);
     }
 
-    /**
+     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -44,7 +46,7 @@ class RoleController extends Controller
     public function getTable(Request $request){
 
         if ($request->ajax()) {
-            $data = Role::latest()->get();
+            $data = Permission::latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
@@ -65,7 +67,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        return view('role.add');
+        return view('permission.add');
     }
 
     /**
@@ -76,29 +78,7 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'name'        => 'required|string|unique:roles',
-            'guard_name'  => 'required|string|max:255',
-            'description' => 'required|string',
-        ]);
-
-        $user = Role::create([
-            'name'        => $data['name'],
-            'guard_name'  => $data['guard_name'],
-            'description' => $data['description'],
-        ]);
-
-        if($user){
-            return response()->json([
-                'success' => true,
-                'message' => $request->input('username').' save successfully !',
-            ], 200);
-        }else{
-            return response()->json([
-                'success' => false,
-                'message' => "Failed to save !"
-            ], 401);
-        }
+        //
     }
 
     /**
@@ -118,11 +98,9 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Role $role)
+    public function edit($id)
     {
-        return view('role.edit',[
-            'data'  => $role,
-       ]);
+        //
     }
 
     /**
@@ -132,34 +110,9 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(Request $request, $id)
     {
-        $rules = [
-            'name'        => 'required|string',
-            'guard_name'  => 'required|string|max:255',
-            'description' => 'required|string',
-        ];
-       
-        if($request->name != $request->name_old){
-            $rules['name'] = 'required|unique:roles';
-        }
-
-        $validatedData =  $request->validate($rules);
-
-        $data = Role::where('id', $role->id)
-        ->update($validatedData);
-       
-        if($data){
-            return response()->json([
-                'success' => true,
-                'message' => $request->input('name').' update successfully !',
-            ], 200);
-        }else{
-            return response()->json([
-                'success' => false,
-                'message' => "Failed to update !"
-            ], 401);
-        }
+        //
     }
 
     /**
@@ -168,13 +121,8 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($role, Request $request)
+    public function destroy($id)
     {
-        $data = Role::find($role);
-        $data->delete();
-        return response()->json([
-            'success' => true,
-            'message' => $request->input('name').' successfully deleted !',
-        ], 200);
+        //
     }
 }

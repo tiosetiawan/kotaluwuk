@@ -32,9 +32,9 @@ class UserController extends Controller
             '/js/master/user.js'
         );
         return view('user.index',[
-            'title' => 'User',
+            'title'  => 'User',
             'header' => '<i class="bi bi-people"></i>&nbsp;<b>Data Users</b>',
-            'data'  => $data,
+            'data'   => $data,
         ]);
     }
 
