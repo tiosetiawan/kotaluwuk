@@ -55,7 +55,6 @@ class RoleController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-
     }
 
     /**

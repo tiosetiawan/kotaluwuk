@@ -47,6 +47,7 @@ $(document).ready(function () {
         var route_name = $("#route_name").val();
         var icon       = $("#icon").val();
         var order_line = $("#order_line").val();
+        var role       = $("#role").val();
         var index      = $("#index").is(":checked");
         var create     = $("#create").is(":checked");
         var edit       = $("#edit").is(":checked");
@@ -55,13 +56,14 @@ $(document).ready(function () {
 
 	    $.ajax({
 		    method: "POST",
-		    url: '/roles',
+		    url: '/permissions',
 		    cache: false,
 		    data: {
 		        menu_name : menu_name,
 		        route_name: route_name,
 		        icon      : icon,
 		        order_line: order_line,
+		        role      : role,
 		        index     : index,
 		        create    : create,
 		        edit      : edit,

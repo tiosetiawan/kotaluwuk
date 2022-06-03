@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use DataTables;
 class PermissionController extends Controller
 {
@@ -35,6 +36,7 @@ class PermissionController extends Controller
             'title'  => 'Permissions',
             'header' => '<i class="bi bi-sliders2-vertical"></i>&nbsp;<b>Data Permissions</b>',
             'data'   => $data,
+            'roles'  => Role::all()
        ]);
     }
 
@@ -67,7 +69,9 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        return view('permission.add');
+        return view('permission.add',[
+            'roles'  => Role::all()
+        ]);
     }
 
     /**
@@ -78,7 +82,73 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'menu_name'  => 'required|string|max:255',
+            'route_name' => 'required|string|max:255',
+            'icon'       => 'required|string',
+            'role'       => 'required|string',
+        ]);
+
+       try{
+            $data = [
+                'menu_name'  => $request->input('menu_name'),
+                'route_name' => $request->input('route_name'),
+                'icon'       => $request->input('icon'),
+            ];
+
+            $index  = $request->input('index');
+            $create = $request->input('create');
+            $edit   = $request->input('edit');
+            $erase  = $request->input('erase');
+            $role   = $request->input('role');
+
+            if($index){
+                $this->generatePermission($data, '-index',$role);
+            }
+            if($create){
+                $this->generatePermission($data, '-create',$role);
+            }
+            if($edit){
+                $this->generatePermission($data, '-edit',$role);
+            }
+            if($erase){
+                $this->generatePermission($data, '-erase',$role);
+            }
+       
+            return response()->json([
+                'success' => true,
+                'message' => $request->input('username').' save successfully !',
+            ], 200);
+
+       }catch (\Exception $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => "Failed to save !"
+            ], 401);
+        }
+    }
+
+
+    function generatePermission($data, $suffix = '-index', $role){
+        $roles = Role::where('id', '=', $role)->first();
+        $data['name'] = strtolower($data['menu_name'] . $suffix);
+        $permissions = Permission::create($data);
+        $permissions->assignRole($roles->name);
+
+        $this->assignPermissionToUser($permissions, $roles);
+    }
+
+    function assignPermissionToUser($permissions, $role){
+        $users = User::leftJoin('model_has_roles', 'model_has_roles.model_id', 'users.id')
+            ->select('users.*')
+            ->where('model_has_roles.role_id', '=', $role->id)
+            ->get();
+
+        if ($users) {
+            foreach ($users as $user) {
+                $user->givePermissionTo($permissions->name);
+            }
+        }
     }
 
     /**

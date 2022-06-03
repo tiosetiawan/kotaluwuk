@@ -9,6 +9,15 @@
             <input class="form-control form-control-sm" type="text" id="route_name">
         </div>
         <div class="form-group">
+            <label class="control-label">Role </label>
+            <select class="form-select form-select-sm" id="role">
+                <option value="">--  Selected --</option>
+                @foreach ($roles as $role)
+                    <option value="{{ $role->id }}">{{ $role->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group">
             <label class="control-label">Icon </label>
             <input class="form-control form-control-sm iconpicker" type="text" id="icon">
         </div>
