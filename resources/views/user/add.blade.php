@@ -23,8 +23,13 @@
             <input class="form-control form-control-sm" type="text" disabled id="divisi">
         </div> 
         <div class="form-group">
-            <label class="control-label">Role</label>
-            <input class="form-control form-control-sm" type="text" disabled id="role">
-        </div> 
+            <label class="control-label">Role </label>
+            <select class="form-select form-select-sm" id="role_id">
+                <option value="">--  Selected --</option>
+                @foreach ($roles as $role)
+                    <option value="{{ $role->id }}">{{ $role->name }}</option>
+                @endforeach
+            </select>
+        </div>
     </div>
 </div>

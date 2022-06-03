@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Spatie\Permission\Models\Role;
 use DataTables;
 use Illuminate\Support\Facades\DB;
 
@@ -82,7 +83,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user.add');
+        return view('user.add',[
+            'roles' => Role::all()
+        ]);
     }
 
     /**
@@ -99,6 +102,7 @@ class UserController extends Controller
             'email'      => 'required|string',
             'perusahaan' => 'required|string',
             'divisi'     => 'required|string',
+            'role_id'    => 'required|string',
         ]);
 
         $user = User::create([
@@ -108,6 +112,7 @@ class UserController extends Controller
             'password'   => '',
             'perusahaan' => $data['perusahaan'],
             'divisi'     => $data['divisi'],
+            'role_id'    => $data['role_id'],
         ]);
 
         if($user){
@@ -144,6 +149,7 @@ class UserController extends Controller
     {
        return view('user.edit',[
             'data'  => $user,
+            'roles' => Role::all()
        ]);
     }
 
@@ -162,6 +168,7 @@ class UserController extends Controller
             'email'      => 'required|string',
             'perusahaan' => 'required|string',
             'divisi'     => 'required|string',
+            'role_id'    => 'required|string',
         ];
        
         if($request->username != $request->username_old){

@@ -87,6 +87,7 @@ $(document).ready(function () {
         var email      = $("#email").val();
         var perusahaan = $("#perusahaan").val();
         var divisi     = $("#divisi").val();
+        var role_id    = $("#role_id").val();
         var token      = $("meta[name='csrf-token']").attr("content");
 	    $.ajax({
 		    method: "POST",
@@ -98,6 +99,7 @@ $(document).ready(function () {
 		        email     : email,
 		        perusahaan: perusahaan,
 		        divisi    : divisi,
+		        role_id   : role_id,
 		        _token    : token,
 		      },
 	    })
@@ -132,11 +134,11 @@ $(document).ready(function () {
         data  : { id_user: id },
       })
         .done(function (view) {
-          $("#MyModalTitle").html("<b>Ubah</b>");
+          $("#MyModalTitle").html("<b>Edit</b>");
           $("div.modal-dialog").addClass("modal-lg");
           $("div#MyModalContent").html(view);
           $("div#MyModalFooter").html(
-            '<button type="submit" class="btn btn-outline-success btn-sm center-block" id="save_edit_btn">Ubah</button>'
+            '<button type="submit" class="btn btn-outline-success btn-sm center-block" id="save_edit_btn">Edit</button>'
           );
           $("div#MyModal").modal("show");
           $("#username").keyup(function (e) {
@@ -194,6 +196,7 @@ $(document).ready(function () {
       var email        = $("#email").val();
       var perusahaan   = $("#perusahaan").val();
       var divisi       = $("#divisi").val();
+      var role_id      = $("#role_id").val();
       var token        = $("meta[name='csrf-token']").attr("content");
   
       $.ajax({
@@ -207,6 +210,7 @@ $(document).ready(function () {
           email       : email,
           perusahaan  : perusahaan,
           divisi      : divisi,
+          role_id     : role_id,
           _token      : token
         },
       })

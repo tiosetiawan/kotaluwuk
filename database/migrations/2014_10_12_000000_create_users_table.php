@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('perusahaan');
             $table->string('divisi');
             $table->string('token_cherry')->nullable();
-            $table->integer('level')->nullable();
+            $table->integer('role_id')->nullable();
             $table->string('last_login')->nullable();
             $table->integer('status')->nullable();
             $table->rememberToken();

@@ -23,9 +23,17 @@
             <input class="form-control form-control-sm" type="text" value="{{ $data->divisi }}" id="divisi" disabled>
         </div> 
         <div class="form-group">
-            <label class="control-label">Role</label>
-            <input class="form-control form-control-sm" type="text" value="" id="role" disabled>
-        </div> 
+            <label class="control-label">Role </label>
+            <select class="form-select form-select-sm" id="role_id">
+                <option value="">--  Selected --</option>
+                @foreach ($roles as $role)
+                @if (old('category_id', $data->role_id) == $role->id)
+                <option value="{{ $role->id }}" selected>{{ $role->name }}</option>
+                @endif
+                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                @endforeach
+            </select>
+        </div>
     </div>
 </div>
 
