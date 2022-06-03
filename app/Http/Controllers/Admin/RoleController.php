@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use Spatie\Permission\Models\Role;
 use DataTables;
-use Illuminate\Support\Facades\DB;
 
-class UserController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +16,6 @@ class UserController extends Controller
      */
     public function index()
     {
-       
         $data['css'] = array(
             '/lib/datatables/dataTables.bootstrap.min.css',
             '/lib/datatables/dataTables.bootstrap5.min.css',
@@ -29,17 +27,16 @@ class UserController extends Controller
             '/lib/datatables/datatables.min.js',
             '/lib/datatables/dataTables.bootstrap5.min.js',
             '/lib/select/chosen.jquery.min.js', 
-            '/js/master/user.js'
+            '/js/master/role.js'
         );
-        return view('user.index',[
-            'title' => 'User',
-            'header' => '<i class="bi bi-people"></i>&nbsp;<b>Data Users</b>',
+        return view('role.index',[
+            'title' => 'Roles',
+            'header' => '<i class="bi bi-sliders2-vertical"></i>&nbsp;<b>Data Roles</b>',
             'data'  => $data,
         ]);
     }
 
-
-     /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -47,12 +44,9 @@ class UserController extends Controller
     public function getTable(Request $request){
 
         if ($request->ajax()) {
-            $data = User::latest()->get();
+            $data = Role::latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('username',function ($data){
-                    return $data->username;
-                })
                 ->addColumn('action', function($row){
                     $actionBtn = "<a id='edit_btn' type='button' class='text-primary' data-id=".$row->id." id='order_btn'><i class='bi bi-pencil-square'></i></a>
                     <a id='delete_btn' type='button' class='text-danger' data-id=".$row->id." data-name=".$row->name." id='order_btn'><i class='bi bi-trash3'></i></a>";
@@ -64,17 +58,6 @@ class UserController extends Controller
 
     }
 
-    public function getUser(Request $request){
-
-        $username = $request->input('username');
-        $data = DB::connection('sqlsrvcherry')->select("SELECT top(1) Name, Nik, Company, OfficeEmailAddress, Department FROM dbo.vw_employee_masterdata where Nik like '%$username' ");
-        return response()->json([
-            'success' => true,
-            'message' => 'Data Berhasil',
-            'data'    => $data
-        ], 200);
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -82,7 +65,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user.add');
+        return view('role.add');
     }
 
     /**
@@ -94,20 +77,15 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'username'   => 'required|string|unique:users',
-            'name'       => 'required|string|max:255',
-            'email'      => 'required|string',
-            'perusahaan' => 'required|string',
-            'divisi'     => 'required|string',
+            'name'        => 'required|string|unique:roles',
+            'guard_name'  => 'required|string|max:255',
+            'description' => 'required|string',
         ]);
 
-        $user = User::create([
-            'username'   => $data['username'],
-            'name'       => $data['name'],
-            'email'      => $data['email'],
-            'password'   => '',
-            'perusahaan' => $data['perusahaan'],
-            'divisi'     => $data['divisi'],
+        $user = Role::create([
+            'name'        => $data['name'],
+            'guard_name'  => $data['guard_name'],
+            'description' => $data['description'],
         ]);
 
         if($user){
@@ -126,10 +104,10 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($id)
     {
         //
     }
@@ -137,13 +115,13 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(Role $role)
     {
-       return view('user.edit',[
-            'data'  => $user,
+        return view('role.edit',[
+            'data'  => $role,
        ]);
     }
 
@@ -151,32 +129,30 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, Role $role)
     {
         $rules = [
-            'username'   => 'required|string',
-            'name'       => 'required|string|max:255',
-            'email'      => 'required|string',
-            'perusahaan' => 'required|string',
-            'divisi'     => 'required|string',
+            'name'        => 'required|string',
+            'guard_name'  => 'required|string|max:255',
+            'description' => 'required|string',
         ];
        
-        if($request->username != $request->username_old){
-            $rules['username'] = 'required|unique:users';
+        if($request->name != $request->name_old){
+            $rules['name'] = 'required|unique:roles';
         }
 
         $validatedData =  $request->validate($rules);
 
-        $data = User::where('id', $user->id)
+        $data = Role::where('id', $role->id)
         ->update($validatedData);
        
         if($data){
             return response()->json([
                 'success' => true,
-                'message' => $request->input('username').' update successfully !',
+                'message' => $request->input('name').' update successfully !',
             ], 200);
         }else{
             return response()->json([
@@ -189,12 +165,12 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $user
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($user, Request $request)
+    public function destroy($role, Request $request)
     {
-        $data = User::find($user);
+        $data = Role::find($role);
         $data->delete();
         return response()->json([
             'success' => true,
