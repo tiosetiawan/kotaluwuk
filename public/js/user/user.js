@@ -58,9 +58,15 @@ $(document).ready(function () {
                         $("#email").val("");
                       }
                     })
-                    .fail(function (res) {
-                      alert("Error Response !");
-                      console.log("responseText", res.responseText);
+                    .fail(function (response) {
+                      if(response.responseJSON.errors){
+                        var values = '';
+                        jQuery.each(response.responseJSON.errors, function (key, value) {
+                            values += value
+                        });
+                        notifNo(values);
+                      }
+                      console.log("responseText", response.responseText);
                     });
                 }
                 e.stopPropagation();
@@ -87,11 +93,11 @@ $(document).ready(function () {
 		    url: '/user',
 		    cache: false,
 		    data: {
-		        username  : $("#username").val(),
-		        name      : $("#name").val(),
-		        email     : $("#email").val(),
-		        perusahaan: $("#perusahaan").val(),
-		        divisi    : $("#divisi").val(),
+		        username  : username,
+		        name      : name,
+		        email     : email,
+		        perusahaan: perusahaan,
+		        divisi    : divisi,
 		        _token    : token,
 		      },
 	    })
@@ -104,12 +110,126 @@ $(document).ready(function () {
                 notifNo(response.message);
             }
       	})
-      	.fail(function (res) {
-        	alert("Error Response !");
-        	console.log("responseText", res.responseText);
-      	});
+        .fail(function (response) {
+          if(response.responseJSON.errors){
+            var values = '';
+            jQuery.each(response.responseJSON.errors, function (key, value) {
+                values += value
+            });
+            notifNo(values);
+          }
+          console.log("responseText", response.responseText);
+        });
   	});
 
+    $(document).on("click", "#edit_btn", function (e) {
+      e.preventDefault();
+      var id = $(this).attr("data-id");
+      $.ajax({
+        method: "GET",
+        url   : "/user/"+ id + "/edit",
+        cache : false,
+        data  : { id_user: id },
+      })
+        .done(function (view) {
+          $("#MyModalTitle").html("<b>Ubah</b>");
+          $("div.modal-dialog").addClass("modal-lg");
+          $("div#MyModalContent").html(view);
+          $("div#MyModalFooter").html(
+            '<button type="submit" class="btn btn-outline-success btn-sm center-block" id="save_edit_btn">Ubah</button>'
+          );
+          $("div#MyModal").modal("show");
+          $("#username").keyup(function (e) {
+            e.preventDefault();
+            username = $("#username").val();
+            if (username.length >= 8) {
+              $.ajax({
+                method: "GET",
+                cache: false,
+                url: "/user/cherry",
+                data: {
+                  username: username,
+                },
+              })
+                .done(function (result) {
+                  if (result.data !== null) {
+                    $("#name").val(result.data[0].Name);
+                    $("#perusahaan").val(result.data[0].Company);
+                    $("#email").val(result.data[0].OfficeEmailAddress);
+                    $("#divisi").val(result.data[0].Department);
+                  } else {
+                    $("#name").val("");
+                    $("#perusahaan").val("");
+                    $("#divisi").val("");
+                    $("#email").val("");
+                  }
+                })
+                .fail(function (res) {
+                  alert("Error Response !");
+                  console.log("responseText", res.responseText);
+                });
+            }
+            e.stopPropagation();
+          });
+          $(".autocomplete").chosen();
+        })
+        .fail(function (response) {
+          if(response.responseJSON.errors){
+            var values = '';
+            jQuery.each(response.responseJSON.errors, function (key, value) {
+                values += value
+            });
+            notifNo(values);
+          }
+          console.log("responseText", response.responseText);
+        });
+    });
+  
+    $(document).on("click", "#save_edit_btn", function (e) {
+      e.preventDefault();
+      var id           = $("#id").val();
+      var username_old = $("#username_old").val();
+      var username     = $("#username").val();
+      var name         = $("#name").val();
+      var email        = $("#email").val();
+      var perusahaan   = $("#perusahaan").val();
+      var divisi       = $("#divisi").val();
+      var token        = $("meta[name='csrf-token']").attr("content");
+  
+      $.ajax({
+        method: "PUT",
+        url: "/user/" + id,
+        data: {
+          id          : id,
+          username    : username,
+          username_old: username_old,
+          name        : name,
+          email       : email,
+          perusahaan  : perusahaan,
+          divisi      : divisi,
+          _token      : token
+        },
+      })
+        .done(function (response) {
+          if (response.success) {
+	          $("div#MyModal").modal("hide");
+	          notifYesAuto(response.message);
+	          table.ajax.reload();
+	        }else{
+             notifNo(response.message);
+          }
+        })
+        .fail(function (response) {
+          if(response.responseJSON.errors){
+            var values = '';
+            jQuery.each(response.responseJSON.errors, function (key, value) {
+                values += value
+            });
+            notifNo(values);
+          }
+          console.log("responseText", response.responseText);
+        });
+    });
 
     $(document).on("click", "#delete_btn", function (e) {
     e.preventDefault();
@@ -127,12 +247,11 @@ $(document).ready(function () {
         if (result.value) {
         $.ajax({
           type: "post",
-            url: "/user/"+ id,
-            data: {
+          url : "/user/"+ id,
+          data: {
             id_user: id,
             name   : name,
-            _token    : token,
-           '_method': 'delete'
+            _token : token,
             },
         })
             .done(function (response) {
@@ -144,9 +263,15 @@ $(document).ready(function () {
                   notifNo(response.message);
               }
             })
-            .fail(function (res) {
-            alert("Error Response !");
-            console.log("responseText", res.responseText);
+            .fail(function (response) {
+              if(response.responseJSON.errors){
+                var values = '';
+                jQuery.each(response.responseJSON.errors, function (key, value) {
+                    values += value
+                });
+                notifNo(values);
+              }
+              console.log("responseText", response.responseText);
             });
         }
     });

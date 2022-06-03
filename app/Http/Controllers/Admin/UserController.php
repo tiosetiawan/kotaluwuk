@@ -94,8 +94,8 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
+            'username'   => 'required|string|unique:users',
             'name'       => 'required|string|max:255',
-            'username'   => 'required|string',
             'email'      => 'required|string',
             'perusahaan' => 'required|string',
             'divisi'     => 'required|string',
@@ -142,7 +142,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+       return view('user.edit',[
+            'data'  => $user,
+       ]);
     }
 
     /**
@@ -154,7 +156,34 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $rules = [
+            'username'   => 'required|string',
+            'name'       => 'required|string|max:255',
+            'email'      => 'required|string',
+            'perusahaan' => 'required|string',
+            'divisi'     => 'required|string',
+        ];
+       
+        if($request->username != $request->username_old){
+            $rules['username'] = 'required|unique:users';
+        }
+
+        $validatedData =  $request->validate($rules);
+
+        $data = User::where('id', $user->id)
+        ->update($validatedData);
+       
+        if($data){
+            return response()->json([
+                'success' => true,
+                'message' => $request->input('username').' update successfully !',
+            ], 200);
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => "Failed to update !"
+            ], 401);
+        }
     }
 
     /**
