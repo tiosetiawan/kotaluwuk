@@ -76,8 +76,9 @@
 }
 
 .sidenav-menu a:hover {
-    background: rgba(0, 0, 0, .05);
+    background-color: #cff6dd6f;
     color: #333;
+    border-radius: 10px;
 }
 
 .sidenav-menu a.active,
