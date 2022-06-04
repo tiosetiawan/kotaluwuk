@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 
  
 function menus(){
+    $array = array();
     $permissions = Auth::user()
     ->getAllPermissions();
     foreach ($permissions as $permission) {

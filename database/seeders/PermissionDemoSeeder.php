@@ -21,10 +21,14 @@ class PermissionDemoSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // create permissions
-        // Permission::create([
-        //     'name'      => 'user-index',
-        //     'menu_name' => 'User',
-        // ]);
+        Permission::create([
+            'name'       => 'dashboard-index',
+            'menu_name'  => 'Dashboard',
+            'icon'       => 'bi bi-house-door',
+            'route_name' => '/dashboard',
+            'order_line' => '1',
+
+        ]);
         // Permission::create([
         //     'name'      => 'user-store',
         //     'menu_name' => 'User',
@@ -74,6 +78,7 @@ class PermissionDemoSeeder extends Seeder
             'perusahaan' => 'PT IMIP',
             'divisi'     => 'IT - APPLICATION DEVELOPMENT',
             'password'   => bcrypt('12345678'),
+            'role_id'    => 1
         ]);
 
         $user4 = User::factory()->create([
@@ -87,8 +92,8 @@ class PermissionDemoSeeder extends Seeder
        
 
         //create roles and assign existing permissions
-        // $writerRole = User::where('username', '88101731')->first();
-        // $writerRole->givePermissionTo('user-index');
+        $admin = User::where('username', '88102332')->first();
+        $admin->givePermissionTo('dashboard-index');
         // $writerRole->givePermissionTo('user-store');
         // $writerRole->givePermissionTo('user-edits');
 
@@ -108,12 +113,12 @@ class PermissionDemoSeeder extends Seeder
         // gets all permissions via Gate::before rule
 
         // create Role
-        $adminRole      = Role::create(['name' => 'admin']);
         $superadminRole = Role::create(['name' => 'superadmin']);
-        $superadminRole = Role::create(['name' => 'personal']);
+        $adminRole      = Role::create(['name' => 'admin']);
+        $personalRole   = Role::create(['name' => 'personal']);
        
         //arahkan role
-        // $user1->assignRole($adminRole);
+        $user3->assignRole($superadminRole);
         // $user3->assignRole($superadminRole);
     }
 }

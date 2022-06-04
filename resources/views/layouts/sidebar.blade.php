@@ -8,8 +8,8 @@
          $menus = menus()
         @endphp
         @foreach ($menus as $menu)
-        <li class="">
-            <a href="{{ $menu['route_name'] }}" >
+        <li>
+            <a href="{{ $menu['route_name'] }}">
                 <span class="sidenav-link-icon"> <i class="{{ $menu['icon'] }}"></i></span>
                 </span><span class="sidenav-link-title">{{ $menu['menu'] }}</span>
             </a>

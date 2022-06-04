@@ -13,10 +13,12 @@
     <link rel="stylesheet" href="/css/global.css">
     {{-- end css --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
+  
     {{-- looping data css controller --}}
     @foreach ($data['css'] as $dt)
         <link rel="stylesheet" href="{{ $dt }}">
     @endforeach
+
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 </head>
 
@@ -42,9 +44,11 @@
 <script>$('[data-sidenav]').sidenav();</script>
 {{-- end js --}}
 
+
 {{-- looping data js controller --}}
 @foreach ($data['js'] as $dt)
 <script src="{{ $dt }}"></script>
 @endforeach
+
 
 </html>

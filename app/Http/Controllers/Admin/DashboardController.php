@@ -13,14 +13,11 @@ class DashboardController extends Controller
 
     public function __construct()
     {
-        // $this->middleware('permission:dashboard-index', ['only' => ['index']]);
+        $this->middleware('permission:dashboard-index', ['only' => ['index']]);
     }
 
    public function index(Request $request){
 
-    // dd($this->menus($request));
-
-    
         $data['css'] = array(
         );
         
@@ -41,20 +38,5 @@ class DashboardController extends Controller
     public function unpublish()
     {
         echo 'post berhasil diunpublish';
-    }
-
-    public function menus($request){
-        $permissions = Auth::user()
-        ->getAllPermissions();
-        foreach ($permissions as $permission) {
-            if(Str::contains($permission->name, 'index')) {
-            $array[] = [
-                'menu' => $permission->menu_name,
-                'icon' => $permission->icon,
-                'route_name' => $permission->route_name
-            ];
-         }
-        }
-        dd($array);
     }
 }
