@@ -9,6 +9,7 @@
     {{-- css --}}
     <link href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap-icons.css">
+    <link rel="stylesheet" href="/lib/sidenav/sidenav.min.css">
     <link rel="stylesheet" href="/css/global.css">
     {{-- end css --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -36,8 +37,9 @@
 <script src="/lib/jquery/jquery.min.js"></script>
 <script src="/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/lib/sweetalert/sweetalert2.all.min.js"></script>
-
+<script src="/lib/sidenav/sidenav.min.js"></script>
 <script src="/js/global.js"></script>
+<script>$('[data-sidenav]').sidenav();</script>
 {{-- end js --}}
 
 {{-- looping data js controller --}}

@@ -48,9 +48,6 @@ class PermissionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getTable(Request $request){
-        // $data = ListMenuPermission::select('*');
-        // dd($data->get());
-
         if ($request->ajax()) {
             $data = ListMenuPermission::select('*')
             ->get();
@@ -64,7 +61,6 @@ class PermissionController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-
     }
 
     /**
@@ -91,6 +87,7 @@ class PermissionController extends Controller
             'menu_name'  => 'required|string|max:255',
             'route_name' => 'required|string|max:255',
             'icon'       => 'required|string',
+            'order_line' => 'required|string',
             'role'       => 'required|string',
         ]);
 
@@ -99,24 +96,25 @@ class PermissionController extends Controller
                 'menu_name'  => $request->input('menu_name'),
                 'route_name' => $request->input('route_name'),
                 'icon'       => $request->input('icon'),
+                'order_line' => $request->input('order_line'),
             ];
 
-            $index  = $request->input('index');
-            $create = $request->input('create');
-            $edit   = $request->input('edit');
-            $erase  = $request->input('erase');
-            $role   = $request->input('role');
+            $index  = $request->index;
+            $create = $request->create;
+            $edit   = $request->edit;
+            $erase  = $request->erase;
+            $role   = $request->role;
 
-            if($index == true){
+            if($index == "true"){
                 $this->generatePermission($data, '-index',$role);
             }
-            if($create == true){
+            if($create == "true"){
                 $this->generatePermission($data, '-create',$role);
             }
-            if($edit == true){
+            if($edit == "true"){
                 $this->generatePermission($data, '-edit',$role);
             }
-            if($erase == true){
+            if($erase == "true"){
                 $this->generatePermission($data, '-erase',$role);
             }
        

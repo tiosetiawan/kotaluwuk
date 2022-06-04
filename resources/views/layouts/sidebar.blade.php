@@ -1,9 +1,19 @@
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasExampleLabel"><img src="/img/logo-imip.png" alt="" width="80" height="30" class="d-inline-block align-text-top"></h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-      
-    </div>
-</div>
+<nav class="sidenav" data-sidenav data-sidenav-toggle="#sidenav-toggle">
+	<div class="sidenav-brand ">
+		<a class="toggle back" id="sidenav-toggle"><i class="fa fa-angle-left"></i></a>
+		<a class="avatar-username" href="/"> <img class="img-responsive logo-sidebar center-block" width="80" height="30" src="/img/logo-imip.png"></a>
+	</div>
+	<ul class="sidenav-menu">
+        @php
+         $menus = menus()
+        @endphp
+        @foreach ($menus as $menu)
+        <li class="">
+            <a href="{{ $menu['route_name'] }}" >
+                <span class="sidenav-link-icon"> <i class="{{ $menu['icon'] }}"></i></span>
+                </span><span class="sidenav-link-title">{{ $menu['menu'] }}</span>
+            </a>
+        </li>
+        @endforeach  
+	</ul>
+ </nav>
