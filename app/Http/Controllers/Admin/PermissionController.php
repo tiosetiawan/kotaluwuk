@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use App\Models\User;
+use App\Models\ListMenuPermission;
 use DataTables;
 class PermissionController extends Controller
 {
@@ -46,9 +48,12 @@ class PermissionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getTable(Request $request){
+        // $data = ListMenuPermission::select('*');
+        // dd($data->get());
 
         if ($request->ajax()) {
-            $data = Permission::latest()->get();
+            $data = ListMenuPermission::select('*')
+            ->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
@@ -102,16 +107,16 @@ class PermissionController extends Controller
             $erase  = $request->input('erase');
             $role   = $request->input('role');
 
-            if($index){
+            if($index == true){
                 $this->generatePermission($data, '-index',$role);
             }
-            if($create){
+            if($create == true){
                 $this->generatePermission($data, '-create',$role);
             }
-            if($edit){
+            if($edit == true){
                 $this->generatePermission($data, '-edit',$role);
             }
-            if($erase){
+            if($erase == true){
                 $this->generatePermission($data, '-erase',$role);
             }
        
@@ -134,7 +139,6 @@ class PermissionController extends Controller
         $data['name'] = strtolower($data['menu_name'] . $suffix);
         $permissions = Permission::create($data);
         $permissions->assignRole($roles->name);
-
         $this->assignPermissionToUser($permissions, $roles);
     }
 

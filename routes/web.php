@@ -17,7 +17,7 @@ use App\Http\Controllers\Admin\UserController;
 |
 */
 
-Route::get('/', [LoginController::class, 'index']);
+Route::get('/', [LoginController::class, 'index'])->middleware('guest');
 
 
 // routing login

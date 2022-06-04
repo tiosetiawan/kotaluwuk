@@ -162,6 +162,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+
         $rules = [
             'username'   => 'required|string',
             'name'       => 'required|string|max:255',
@@ -175,11 +176,25 @@ class UserController extends Controller
             $rules['username'] = 'required|unique:users';
         }
 
-        $validatedData =  $request->validate($rules);
+        $validatedData = $request->validate($rules);
 
+        //delete model has roles ketika ganti role
+        DB::table('model_has_roles')
+        ->where('model_id', '=', $user->id)
+        ->where('model_type', '=', 'App\Models\User')
+        ->delete();
+
+        //update data user
         $data = User::where('id', $user->id)
         ->update($validatedData);
-       
+
+        //get role dan konek role to user
+        $roles = Role::where('id', '=', $request->role_id)->first();
+        $user->assignRole($roles->name);
+
+        $this->setPermission($request, $user);
+
+        
         if($data){
             return response()->json([
                 'success' => true,
@@ -190,6 +205,29 @@ class UserController extends Controller
                 'success' => false,
                 'message' => "Failed to update !"
             ], 401);
+        }
+    }
+
+    function setPermission($request, $user){
+
+        // delete permission
+        $role_permission_del = DB::table('role_has_permissions')
+        ->select('role_id', 'permission_id','name')
+        ->leftJoin('permissions', 'permissions.id', '=', 'role_has_permissions.permission_id')
+        ->where('role_id', $user->role_id)->get();
+
+        foreach($role_permission_del as $rm){
+            $user->revokePermissionTo($rm->name);
+        }
+
+        // create permission
+        $role_permission_ins = DB::table('role_has_permissions')
+        ->select('role_id', 'permission_id','name')
+        ->leftJoin('permissions', 'permissions.id', '=', 'role_has_permissions.permission_id')
+        ->where('role_id', $request->role_id)->get();
+
+        foreach($role_permission_ins as $rm){
+            $user->givePermissionTo($rm->name);
         }
     }
 

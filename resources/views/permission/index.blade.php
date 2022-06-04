@@ -16,6 +16,11 @@
                         <th>Menu Name</th>
                         <th>Icon</th>
                         <th>Route Name</th>
+                        <th>Order Line</th>
+                        <th>Index</th>
+                        <th>Store</th>
+                        <th>Edits</th>
+                        <th>Erase</th>
                         <th>Action</th>
                     </tr>
                 </thead>

@@ -27,7 +27,7 @@
             <select class="form-select form-select-sm" id="role_id">
                 <option value="">--  Selected --</option>
                 @foreach ($roles as $role)
-                @if (old('category_id', $data->role_id) == $role->id)
+                @if (old('role_id', $data->role_id) == $role->id)
                 <option value="{{ $role->id }}" selected>{{ $role->name }}</option>
                 @endif
                 <option value="{{ $role->id }}">{{ $role->name }}</option>

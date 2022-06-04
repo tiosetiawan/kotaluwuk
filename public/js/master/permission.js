@@ -8,6 +8,11 @@ $(document).ready(function () {
             {data: 'menu_name', name: 'menu_name'},
             {data: 'icon', name: 'icon'},
             {data: 'route_name', name: 'route_name'},
+            {data: 'order_line', name: 'order_line'},
+            {data: 'index', name: 'index'},
+            {data: 'store', name: 'store'},
+            {data: 'edits', name: 'edits'},
+            {data: 'erase', name: 'erase'},
             {
                 data: 'action',
                 name: 'action',
@@ -16,7 +21,7 @@ $(document).ready(function () {
             },
         ],
         columnDefs: [
-            { targets: [0, 1, 2,3,4], className: "text-center" },
+            { targets: [0, 1, 2,3,4,5,6,7,8,9], className: "text-center" },
           ],
     });
 
@@ -88,7 +93,7 @@ $(document).ready(function () {
             });
             notifNo(values);
           }
-          console.log("responseText", response.responseText);
+          
         });
   	});
 

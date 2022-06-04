@@ -11,12 +11,12 @@ class DashboardController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:view menu', ['only' => ['index']]);
-        $this->middleware('permission:create menu', ['only' => ['create', 'store']]);
-        $this->middleware('permission:edit menu', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:delete menu', ['only' => ['destroy']]);
-        $this->middleware('permission:publish menu', ['only' => ['publish']]);
-        $this->middleware('permission:unpublish menu', ['only' => ['unpublish']]);
+        // $this->middleware('permission:view menu', ['only' => ['index']]);
+        // $this->middleware('permission:create menu', ['only' => ['create', 'store']]);
+        // $this->middleware('permission:edit menu', ['only' => ['edit', 'update']]);
+        // $this->middleware('permission:delete menu', ['only' => ['destroy']]);
+        // $this->middleware('permission:publish menu', ['only' => ['publish']]);
+        // $this->middleware('permission:unpublish menu', ['only' => ['unpublish']]);
     }
 
    public function index(Request $request){
