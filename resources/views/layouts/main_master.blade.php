@@ -22,7 +22,7 @@
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 </head>
 
-<body>
+<body class="d-flex flex-column">
     @include('layouts.header')
     <div class="container-fluid">
         <div class="row">

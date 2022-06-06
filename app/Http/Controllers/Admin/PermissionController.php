@@ -97,14 +97,14 @@ class PermissionController extends Controller
             'role'       => 'required',
         ]);
 
-    //    try{
+       try{
             $data = [
                 'menu_name'  => $request->menu_name,
                 'route_name' => $request->route_name,
                 'icon'       => $request->icon,
                 'order_line' => $request->order_line,
-                'is_route'   => ($request->is_route == "true") ? 'Y' : 'N',
-                'parent_id'  => $request->parent_id,
+                'parent_id'  => ($request->parent_id) ? $request->parent_id : 0,
+                'has_route'  => ($request->is_route == "true") ? 'Y' : 'N',
                 'has_child'  => ($request->has_child == "true") ? 'Y' : 'N',
             ];
 
@@ -132,12 +132,12 @@ class PermissionController extends Controller
                 'message' => $request->username.' save successfully !',
             ], 200);
 
-    //    }catch (\Exception $exception) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => "Failed to save !"
-    //         ], 401);
-    //     }
+       }catch (\Exception $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => "Failed to save !"
+            ], 401);
+        }
     }
 
       /**

@@ -29,8 +29,11 @@ class CreatePermissionTables extends Migration
             $table->bigIncrements('id');
             $table->string('name');       // For MySQL 8.0 use string('name', 125);
             $table->string('menu_name')->nullable();
+            $table->unsignedBigInteger('parent_id')->nullable();
             $table->string('icon', 60)->nullable();
             $table->string('route_name')->nullable();
+            $table->string('has_child', 10)->default('N');
+            $table->string('has_route', 10)->default('N');
             $table->string('order_line', 10)->nullable();
             $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
             $table->timestamps();

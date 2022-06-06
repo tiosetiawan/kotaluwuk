@@ -209,6 +209,11 @@ body {
 
 .form-group{
   margin-bottom: 10px !important;
+  padding: 5px;
+}
+
+.sidenav-dropdown a{
+  background-color: none !important;
 }
 
 .navbar-nav>.active> a {
@@ -224,4 +229,8 @@ body {
 a.placeholder, button.bs-placeholder {
   font-style: italic !important;
   color: #636c72;
+}
+
+.container-footer {
+  width: auto;
 }
