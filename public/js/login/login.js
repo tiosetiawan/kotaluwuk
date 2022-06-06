@@ -25,7 +25,7 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.success) {
                     toastr.success(response.message, '', {
-                        timeOut: 1500,
+                        timeOut: 1000,
                         onHidden: function () {
                             window.location.href = '/dashboard';
                         }

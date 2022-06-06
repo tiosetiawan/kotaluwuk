@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Spatie\Permission\Models\Role;
 
 class LoginController extends Controller
 {
@@ -34,7 +35,10 @@ class LoginController extends Controller
 
         $username = $request->input('username');
         $password = $request->input('password');
+
         $user = User::where('username', $username)->first();
+        $role = Role::where('id', $user->role_id)->first();
+        $user->assignRole($role->name);
 
         if(!$user){
             return response()->json([

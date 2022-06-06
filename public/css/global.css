@@ -216,3 +216,12 @@ body {
   color: #333 !important;
   border-radius: 10px;
 }
+
+.bootstrap-select .dropdown-toggle .filter-option {
+  font-size: 8pt !important;
+}
+
+a.placeholder, button.bs-placeholder {
+  font-style: italic !important;
+  color: #636c72;
+}

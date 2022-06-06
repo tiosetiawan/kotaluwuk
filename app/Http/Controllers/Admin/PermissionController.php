@@ -23,6 +23,7 @@ class PermissionController extends Controller
             '/lib/datatables/dataTables.bootstrap5.min.css',
 			'/lib/select/component-chosen.min.css',
             '/lib/select/bootstrap-chosen.css',  
+            '/lib/multiselect/css/bootstrap-select.min.css',  
             '/lib/iconpicker/css/bootstrapicons-iconpicker.css'
         );
         
@@ -31,6 +32,7 @@ class PermissionController extends Controller
             '/lib/datatables/dataTables.bootstrap5.min.js',
             '/lib/select/chosen.jquery.min.js', 
             '/lib/iconpicker/js/bootstrapicon-iconpicker.js',
+            '/lib/multiselect/js/bootstrap-select.min.js',
             '/js/master/permission.js'
         );
 
@@ -70,8 +72,13 @@ class PermissionController extends Controller
      */
     public function create()
     {
+        $parents = Permission::where('has_child', 'Y')
+        ->select('id','menu_name')
+        ->get();
+
         return view('permission.add',[
-            'roles'  => Role::all()
+            'roles'   => Role::all(),
+            'parents' => $parents,
         ]);
     }
 
@@ -85,18 +92,20 @@ class PermissionController extends Controller
     {
         $request->validate([
             'menu_name'  => 'required|string|max:255',
-            'route_name' => 'required|string|max:255',
             'icon'       => 'required|string',
             'order_line' => 'required|string',
-            'role'       => 'required|string',
+            'role'       => 'required',
         ]);
 
-       try{
+    //    try{
             $data = [
-                'menu_name'  => $request->input('menu_name'),
-                'route_name' => $request->input('route_name'),
-                'icon'       => $request->input('icon'),
-                'order_line' => $request->input('order_line'),
+                'menu_name'  => $request->menu_name,
+                'route_name' => $request->route_name,
+                'icon'       => $request->icon,
+                'order_line' => $request->order_line,
+                'is_route'   => ($request->is_route == "true") ? 'Y' : 'N',
+                'parent_id'  => $request->parent_id,
+                'has_child'  => ($request->has_child == "true") ? 'Y' : 'N',
             ];
 
             $index  = $request->index;
@@ -109,7 +118,7 @@ class PermissionController extends Controller
                 $this->generatePermission($data, '-index',$role);
             }
             if($create == "true"){
-                $this->generatePermission($data, '-create',$role);
+                $this->generatePermission($data, '-store',$role);
             }
             if($edit == "true"){
                 $this->generatePermission($data, '-edit',$role);
@@ -120,27 +129,59 @@ class PermissionController extends Controller
        
             return response()->json([
                 'success' => true,
-                'message' => $request->input('username').' save successfully !',
+                'message' => $request->username.' save successfully !',
             ], 200);
 
-       }catch (\Exception $exception) {
-            return response()->json([
-                'success' => false,
-                'message' => "Failed to save !"
-            ], 401);
-        }
+    //    }catch (\Exception $exception) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => "Failed to save !"
+    //         ], 401);
+    //     }
     }
 
-
+      /**
+     * @param $data
+     * @param $suffix
+     * @param $role array
+     */
     function generatePermission($data, $suffix = '-index', $role){
-        $roles = Role::where('id', '=', $role)->first();
+
         $data['name'] = strtolower($data['menu_name'] . $suffix);
-        $permissions = Permission::create($data);
-        $permissions->assignRole($roles->name);
-        $this->assignPermissionToUser($permissions, $roles);
+        $check = Permission::where('name', '=', $data['menu_name'] . $suffix)->first();
+
+        if ($check) {
+            $permission = Permission::where('id', '=', $check->id)->update($data);
+        } else {
+            $permission = Permission::create($data);
+        }
+      
+        $this->assignPermissionToRole($permission, $role);
     }
 
+
+     /**
+     * @param $permission
+     * @param $role array
+     */
+    protected function assignPermissionToRole($permission, $role)
+    {
+        foreach($role as $rl){
+            $roles = Role::where('id', '=', $rl)->first();
+            $permissions = Permission::where('id', '=', $permission->id)->first();
+            $permissions->assignRole($roles->name);
+            $this->assignPermissionToUser($permission, $roles);
+        }
+       
+    }
+
+     /**
+     * @param $permissions
+     * @param $role
+     */
     function assignPermissionToUser($permissions, $role){
+
+      
         $users = User::leftJoin('model_has_roles', 'model_has_roles.model_id', 'users.id')
             ->select('users.*')
             ->where('model_has_roles.role_id', '=', $role->id)

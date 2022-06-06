@@ -1,7 +1,7 @@
 <header class="navbar navbar-expand-lg navbar-light bg-white">
     <div class="container-fluid">
-        <h5 class=" mt-3"><a href="/dashboard"
-                class="text-decoration-none text-black navbar-brand pl-5"><b>{{ env('APP_NAME') }}</b></a></h5>
+        <h4 class="mt-2"><a href="/dashboard"
+                class="text-decoration-none text-black navbar-brand pl-5"><b>{{ env('APP_NAME') }}</b></a></h4>
         <div class="navbar-nav">
             <div class="nav-item text-nowrap">
                 <form action="/logout" method="post">

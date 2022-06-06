@@ -25,6 +25,8 @@ $(document).ready(function () {
           ],
     });
 
+    
+
     $(document).on('click','#add_btn',function(e){
 		e.preventDefault();
 		$.ajax({
@@ -34,9 +36,22 @@ $(document).ready(function () {
 		})
 		.done(function(view) {
 			$('#MyModalTitle').html('<b>Add</b>');
-			$('div.modal-dialog').addClass('modal-md');
+			$('div.modal-dialog').addClass('modal-lg');
 			$("div#MyModalContent").html(view);
             iconpicker();
+            $('.select').selectpicker();
+            $("#is_routeY").click(function() {
+                if(this.checked) {
+                    $("#hd_route_name").removeClass('d-none');
+                }
+            });
+
+            $("#is_routeN").click(function() {
+                if(this.checked) {
+                    $("#hd_route_name").addClass('d-none');
+                }
+            });
+          
 			$("div#MyModalFooter").html('<button type="submit" class="btn btn-outline-success btn-sm center-block" id="save_add_btn"><i class="bi bi-file-earmark-plus"></i> Save</button>');
 			$("div#MyModal").modal('show');
 		})
@@ -53,12 +68,16 @@ $(document).ready(function () {
         var icon       = $("#icon").val();
         var order_line = $("#order_line").val();
         var role       = $("#role").val();
+        var parent_id  = $("#parent_id").val();
         var index      = $("#index").is(":checked");
         var create     = $("#create").is(":checked");
         var edit       = $("#edit").is(":checked");
         var erase      = $("#erase").is(":checked");
         var token      = $("meta[name='csrf-token']").attr("content");
 
+        var is_routeY  = $("#is_routeY").is(":checked");
+        var has_childY = $("#has_childY").is(":checked");
+        
 	    $.ajax({
 		    method: "POST",
 		    url: '/permissions',
@@ -69,6 +88,9 @@ $(document).ready(function () {
 		        icon      : icon,
 		        order_line: order_line,
 		        role      : role,
+		        parent_id : parent_id,
+		        is_route  : is_routeY,
+		        has_child : has_childY,
 		        index     : index,
 		        create    : create,
 		        edit      : edit,
@@ -78,22 +100,21 @@ $(document).ready(function () {
 	    })
       	.done(function (response) {
 	        if (response.success) {
-	          $("div#MyModal").modal("hide");
-	          notifYesAuto(response.message);
-	          table.ajax.reload();
+                $("div#MyModal").modal("hide");
+                notifYesAuto(response.message);
+                table.ajax.reload();
 	        }else{
                 notifNo(response.message);
             }
       	})
         .fail(function (response) {
           if(response.responseJSON.errors){
-            var values = '';
-            jQuery.each(response.responseJSON.errors, function (key, value) {
-                values += value + "<br>"
-            });
-            notifNo(values);
+                var values = '';
+                jQuery.each(response.responseJSON.errors, function (key, value) {
+                    values += value + "<br>"
+                });
+                notifNo(values);
           }
-          
         });
   	});
 

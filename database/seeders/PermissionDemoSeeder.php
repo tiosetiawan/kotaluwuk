@@ -21,14 +21,14 @@ class PermissionDemoSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // create permissions
-        Permission::create([
-            'name'       => 'dashboard-index',
-            'menu_name'  => 'Dashboard',
-            'icon'       => 'bi bi-house-door',
-            'route_name' => '/dashboard',
-            'order_line' => '1',
+        // Permission::create([
+        //     'name'       => 'dashboard-index',
+        //     'menu_name'  => 'Dashboard',
+        //     'icon'       => 'bi bi-house-door',
+        //     'route_name' => '/dashboard',
+        //     'order_line' => '1',
 
-        ]);
+        // ]);
         // Permission::create([
         //     'name'      => 'user-store',
         //     'menu_name' => 'User',
@@ -86,14 +86,15 @@ class PermissionDemoSeeder extends Seeder
             'username'   => '88102635',
             'email'      => 'yoga@gmail.com',
             'perusahaan' => 'PT IMIP',
+            'role_id'    => 2,
             'divisi'     => 'IT SAP WEB PROGRAMMER',
             'password'   => bcrypt('12345678'),
         ]);
        
 
         //create roles and assign existing permissions
-        $admin = User::where('username', '88102332')->first();
-        $admin->givePermissionTo('dashboard-index');
+        // $admin = User::where('username', '88102332')->first();
+        // $admin->givePermissionTo('dashboard-index');
         // $writerRole->givePermissionTo('user-store');
         // $writerRole->givePermissionTo('user-edits');
 
@@ -118,7 +119,7 @@ class PermissionDemoSeeder extends Seeder
         $personalRole   = Role::create(['name' => 'personal']);
        
         //arahkan role
-        $user3->assignRole($superadminRole);
+        // $user3->assignRole($superadminRole);
         // $user3->assignRole($superadminRole);
     }
 }
