@@ -104,7 +104,7 @@ class UserController extends Controller
             'divisi'     => 'required|string',
             'role_id'    => 'required|string',
         ]);
-
+        DB::beginTransaction();
         $user = User::create([
             'username'   => $data['username'],
             'name'       => $data['name'],
@@ -115,12 +115,20 @@ class UserController extends Controller
             'role_id'    => $data['role_id'],
         ]);
 
+        //get role dan konek role to user
+        $roles = Role::where('id', '=', $request->role_id)->first();
+        $user->assignRole($roles->name);
+
+        $this->setPermission($request, $user);
+
         if($user){
+            DB::commit();
             return response()->json([
                 'success' => true,
                 'message' => $request->input('username').' save successfully !',
             ], 200);
         }else{
+            DB::rollBack();
             return response()->json([
                 'success' => false,
                 'message' => "Failed to save !"
@@ -177,7 +185,7 @@ class UserController extends Controller
         }
 
         $validatedData = $request->validate($rules);
-
+        DB::beginTransaction();
         //delete model has roles ketika ganti role
         DB::table('model_has_roles')
         ->where('model_id', '=', $user->id)
@@ -193,14 +201,15 @@ class UserController extends Controller
         $user->assignRole($roles->name);
 
         $this->setPermission($request, $user);
-
         
         if($data){
+            DB::commit();
             return response()->json([
                 'success' => true,
                 'message' => $request->input('username').' update successfully !',
             ], 200);
         }else{
+            DB::rollBack();
             return response()->json([
                 'success' => false,
                 'message' => "Failed to update !"

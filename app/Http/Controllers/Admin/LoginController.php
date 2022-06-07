@@ -37,15 +37,16 @@ class LoginController extends Controller
         $password = $request->input('password');
 
         $user = User::where('username', $username)->first();
-        $role = Role::where('id', $user->role_id)->first();
-        $user->assignRole($role->name);
-
+    
         if(!$user){
             return response()->json([
                 'success' => false,
                 'message' => 'Username is not registered !',
             ], 401);
         }
+
+        $role = Role::where('id', $user->role_id)->first();
+        $user->assignRole($role->name);
 
         //login cherry check
         $response = Http::post(config('app.token_cherry'), [

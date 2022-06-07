@@ -97,6 +97,7 @@ class PermissionController extends Controller
             'role'       => 'required',
         ]);
 
+       DB::beginTransaction();
        try{
             $data = [
                 'menu_name'  => $request->menu_name,
@@ -126,13 +127,14 @@ class PermissionController extends Controller
             if($erase == "true"){
                 $this->generatePermission($data, '-erase',$role);
             }
-       
+            DB::commit();
             return response()->json([
                 'success' => true,
                 'message' => $request->username.' save successfully !',
             ], 200);
 
        }catch (\Exception $exception) {
+        DB::rollBack();
             return response()->json([
                 'success' => false,
                 'message' => "Failed to save !"
