@@ -118,6 +118,54 @@ $(document).ready(function () {
         });
   	});
 
+    $(document).on("click", "#edit_btn", function (e) {
+        e.preventDefault();
+        var id        = $(this).attr("data-id");
+        var menu_name = $(this).attr("data-name");
+        $.ajax({
+          method: "GET",
+          url   : "/permissions/"+ id + "/edit",
+          cache : false,
+          data  : { 
+              id_permission: id,
+              menu_name    : menu_name
+            },
+        })
+          .done(function (view) {
+            $("#MyModalTitle").html("<b>Edit</b>");
+            $("div.modal-dialog").addClass("modal-lg");
+            $("div#MyModalContent").html(view);
+            $("div#MyModalFooter").html(
+              '<button type="submit" class="btn btn-outline-success btn-sm center-block" id="save_edit_btn">Edit</button>'
+            );
+            $("div#MyModal").modal("show");
+            iconpicker();
+            $('.select').selectpicker();
+            $("#is_routeY").click(function() {
+                if(this.checked) {
+                    $("#hd_route_name").removeClass('d-none');
+                }
+            });
+            $("#is_routeN").click(function() {
+                if(this.checked) {
+                    $("#hd_route_name").addClass('d-none');
+                }
+            });
+            $(".autocomplete").chosen();
+          })
+          .fail(function (response) {
+            if(response.responseJSON.errors){
+              var values = '';
+              jQuery.each(response.responseJSON.errors, function (key, value) {
+                  values += value + "<br>"
+              });
+              notifNo(values);
+            }
+            console.log("responseText", response.responseText);
+          });
+    });
+
+
     function iconpicker(){
         $('.iconpicker').iconpicker({
             title: 'My Icon Picker',

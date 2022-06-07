@@ -1,5 +1,5 @@
 <nav class="sidenav" data-sidenav data-sidenav-toggle="#sidenav-toggle">
-	<div class="sidenav-brand ">
+	<div class="sidenav-brand ml-5">
 		<a class="toggle back" id="sidenav-toggle"><i class="fa fa-angle-left"></i></a>
 		<a class="avatar-username" href="/dashboard"> <img class="img-responsive logo-sidebar center-block" width="80" height="30" src="/img/logo-imip.png"></a>
 	</div>

@@ -56,7 +56,7 @@ class PermissionController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    $actionBtn = "<a id='edit_btn' type='button' class='text-primary' data-id=".$row->id." id='order_btn'><i class='bi bi-pencil-square'></i></a>
+                    $actionBtn = "<a id='edit_btn' type='button' class='text-primary' data-name=".$row->menu_name." data-id=".$row->id." id='order_btn'><i class='bi bi-pencil-square'></i></a>
                     <a id='delete_btn' type='button' class='text-danger' data-id=".$row->id." data-name=".$row->name." id='order_btn'><i class='bi bi-trash3'></i></a>";
                     return $actionBtn;
                 })
@@ -213,9 +213,19 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
-        //
+        $parents = Permission::where('has_child', 'Y')
+        ->select('id','menu_name')
+        ->get();
+
+        $data =  ListMenuPermission::where('menu_name', $request->menu_name)->first();
+
+        return view('permission.edit',[
+            'roles'   => Role::all(),
+            'parents' => $parents,
+            'data'    => $data
+        ]);
     }
 
     /**
