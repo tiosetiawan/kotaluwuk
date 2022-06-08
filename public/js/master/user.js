@@ -2,7 +2,7 @@ $(document).ready(function () {
     var table = $('#tableuser').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "/user/json",
+        ajax: "/configuration/user/json",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
             {data: 'name', name: 'name'},
@@ -27,7 +27,7 @@ $(document).ready(function () {
 		$.ajax({
 			method:"GET",
 			cache:false,
-			url: '/user/create'
+			url: '/configuration/user/create'
 		})
 		.done(function(view) {
 			$('#MyModalTitle').html('<b>Add</b>');
@@ -40,7 +40,7 @@ $(document).ready(function () {
                   $.ajax({
                     method: "GET",
                     cache: false,
-                    url: "/user/cherry",
+                    url: "/configuration/user/cherry",
                     data: {
                       username: username,
                     },
@@ -92,7 +92,7 @@ $(document).ready(function () {
         var token      = $("meta[name='csrf-token']").attr("content");
 	    $.ajax({
 		    method: "POST",
-		    url: '/user',
+		    url: '/configuration/user',
 		    cache: false,
 		    data: {
 		        username  : username,
@@ -130,7 +130,7 @@ $(document).ready(function () {
       var id = $(this).attr("data-id");
       $.ajax({
         method: "GET",
-        url   : "/user/"+ id + "/edit",
+        url   : "/configuration/user/"+ id + "/edit",
         cache : false,
         data  : { id_user: id },
       })
@@ -149,7 +149,7 @@ $(document).ready(function () {
               $.ajax({
                 method: "GET",
                 cache: false,
-                url: "/user/cherry",
+                url: "/configuration/user/cherry",
                 data: {
                   username: username,
                 },
@@ -202,7 +202,7 @@ $(document).ready(function () {
   
       $.ajax({
         method: "PUT",
-        url: "/user/" + id,
+        url: "/configuration/user/" + id,
         data: {
           id          : id,
           username    : username,
@@ -252,7 +252,7 @@ $(document).ready(function () {
         if (result.value) {
         $.ajax({
           type: "post",
-          url : "/user/"+ id,
+          url : "/configuration/user/"+ id,
           data: {
             id_user: id,
             name   : name,

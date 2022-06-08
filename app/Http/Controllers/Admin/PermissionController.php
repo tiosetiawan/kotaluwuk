@@ -275,7 +275,7 @@ class PermissionController extends Controller
         ]);
 
        DB::beginTransaction();
-    //    try{
+       try{
             $data = [
                 'menu_name'  => $request->menu_name,
                 'route_name' => $request->route_name,
@@ -310,13 +310,13 @@ class PermissionController extends Controller
                 'message' => $request->username.' save successfully !',
             ], 200);
 
-    //    }catch (\Exception $exception) {
-    //     DB::rollBack();
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => "Failed to save !"
-    //         ], 401);
-    //     }
+       }catch (\Exception $exception) {
+        DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => "Failed to save !"
+            ], 401);
+        }
     }
 
     /**

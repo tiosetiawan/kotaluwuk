@@ -2,7 +2,7 @@ $(document).ready(function () {
     var table = $('#tableuser').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "/roles/json",
+        ajax: "/configuration/roles/json",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
             {data: 'name', name: 'name'},
@@ -24,7 +24,7 @@ $(document).ready(function () {
 		$.ajax({
 			method:"GET",
 			cache:false,
-			url: '/roles/create'
+			url: '/configuration/roles/create'
 		})
 		.done(function(view) {
 			$('#MyModalTitle').html('<b>Add</b>');
@@ -47,7 +47,7 @@ $(document).ready(function () {
         var token       = $("meta[name='csrf-token']").attr("content");
 	    $.ajax({
 		    method: "POST",
-		    url: '/roles',
+		    url: '/configuration/roles',
 		    cache: false,
 		    data: {
 		        name       : name,
@@ -82,7 +82,7 @@ $(document).ready(function () {
         var id = $(this).attr("data-id");
         $.ajax({
           method: "GET",
-          url   : "/roles/"+ id + "/edit",
+          url   : "/configuration/roles/"+ id + "/edit",
           cache : false,
           data  : { id_role: id },
         })
@@ -120,7 +120,7 @@ $(document).ready(function () {
     
         $.ajax({
           method: "PUT",
-          url: "/roles/" + id,
+          url: "/configuration/roles/" + id,
           data: {
             id         : id,
             name_old   : name_old,
@@ -168,7 +168,7 @@ $(document).ready(function () {
             if (result.value) {
             $.ajax({
               type: "post",
-              url : "/roles/"+ id,
+              url : "/configuration/roles/"+ id,
               data: {
                 id_user: id,
                 name   : name,

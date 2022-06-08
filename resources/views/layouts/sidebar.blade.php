@@ -18,10 +18,16 @@
 
         @foreach ($menus as $menu)
             @if (isset($menu['children']))
-                <li><a href="javascript:;" data-sidenav-dropdown-toggle><span class="sidenav-link-icon"><i class="{{ $menu['icon'] }}"></i></span><span class="sidenav-link-title">{{ $menu['menu'] }}</span><span class="sidenav-dropdown-icon show" data-sidenav-dropdown-icon><i class="bi bi-caret-right"></i></span><span class="sidenav-dropdown-icon" data-sidenav-dropdown-icon><i class="bi bi-caret-down"></i></span></a>{{ "\n" }}
-                    <ul class="sidenav-dropdown" data-sidenav-dropdown>
+                <li>
+                    <a href="javascript:;" data-sidenav-dropdown-toggle>
+                        <span class="sidenav-link-icon"><i class="{{ $menu['icon'] }}"></i></span>
+                        <span class="sidenav-link-title">{{ $menu['menu'] }}</span>
+                        <span class="sidenav-dropdown-icon {{ Request::is(strtolower($menu['menu']).'*') ? '' : 'show' }}" data-sidenav-dropdown-icon><i class="bi bi-caret-right"></i></span>
+                        <span class="sidenav-dropdown-icon {{ Request::is(strtolower($menu['menu']).'*') ? 'show' : '' }}" data-sidenav-dropdown-icon><i class="bi bi-caret-down"></i></span>
+                    </a>{{ "\n" }}
+                    <ul class="sidenav-dropdown" data-sidenav-dropdown style="{{ Request::is(strtolower($menu['menu']).'*') ? 'display: block;' : '' }}">
                         @foreach ($menu['children'] as $child)
-                            <li class="nav-item {{ Request::is(strtolower($child['menu'])) ? 'active' : '' }}">
+                            <li class="nav-item {{ Request::is(strtolower($menu['menu']).'/'.strtolower($child['menu'])) ? 'active' : '' }}">
                                 <a href="{{ $child['route_name'] }}">
                                     <span class="sidenav-link-icon"><i class="{{ $child['icon'] }}"></i></span>
                                     <span class="sidenav-link-title">{{ $child['menu'] }}</span>

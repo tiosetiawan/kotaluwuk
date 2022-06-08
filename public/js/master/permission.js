@@ -2,7 +2,7 @@ $(document).ready(function () {
     var table = $('#tableuser').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "/permissions/json",
+        ajax: "/configuration/permissions/json",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
             {data: 'menu_name', name: 'menu_name'},
@@ -32,7 +32,7 @@ $(document).ready(function () {
 		$.ajax({
 			method:"GET",
 			cache:false,
-			url: '/permissions/create'
+			url: '/configuration/permissions/create'
 		})
 		.done(function(view) {
 			$('#MyModalTitle').html('<b>Add</b>');
@@ -80,7 +80,7 @@ $(document).ready(function () {
         
 	    $.ajax({
 		    method: "POST",
-		    url: '/permissions',
+		    url: '/configuration/permissions',
 		    cache: false,
 		    data: {
 		        menu_name : menu_name,
@@ -124,7 +124,7 @@ $(document).ready(function () {
         var menu_name = $(this).attr("data-name");
         $.ajax({
           method: "GET",
-          url   : "/permissions/"+ id + "/edit",
+          url   : "/configuration/permissions/"+ id + "/edit",
           cache : false,
           data  : { 
               id_permission: id,
@@ -184,7 +184,7 @@ $(document).ready(function () {
         
 	    $.ajax({
 		    method: "PUT",
-		    url: '/permissions/' + "1",
+		    url: '/configuration/permissions/' + null,
 		    cache: false,
 		    data: {
 		        menu_name : menu_name,
