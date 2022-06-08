@@ -25,7 +25,7 @@ Route::get('/login', [LoginController::class, 'index'])->name('login')->middlewa
 Route::post('/store', [LoginController::class, 'store']);
 Route::post('/logout', [LoginController::class,'destroy']);
 
-// routing akses admin
+// routing auth akses
 Route::group(['middleware' => ['auth']], function () {
 Route::get('/dashboard', [DashboardController::class, 'index']);
 
@@ -44,6 +44,6 @@ Route::resource('/permissions', PermissionController::class);
 });
 
 
-// testing spatie
+// testing spatie route
 Route::put('post/publish', [DashboardController::class, 'publish'])->name('post.publish');
 Route::put('post/unpublish', [DashboardController::class, 'unpublish'])->name('post.unpublish');

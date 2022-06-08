@@ -165,6 +165,63 @@ $(document).ready(function () {
           });
     });
 
+    $(document).on("click", "#save_edit_btn", function (e) {
+    	e.preventDefault();
+        var menu_name  = $("#menu_name").val();
+        var route_name = $("#route_name").val();
+        var icon       = $("#icon").val();
+        var order_line = $("#order_line").val();
+        var role       = $("#role").val();
+        var parent_id  = $("#parent_id").val();
+        var index      = $("#index").is(":checked");
+        var create     = $("#create").is(":checked");
+        var edit       = $("#edit").is(":checked");
+        var erase      = $("#erase").is(":checked");
+        var token      = $("meta[name='csrf-token']").attr("content");
+
+        var is_routeY  = $("#is_routeY").is(":checked");
+        var has_childY = $("#has_childY").is(":checked");
+        
+	    $.ajax({
+		    method: "PUT",
+		    url: '/permissions/' + "1",
+		    cache: false,
+		    data: {
+		        menu_name : menu_name,
+		        route_name: route_name,
+		        icon      : icon,
+		        order_line: order_line,
+		        role      : role,
+		        parent_id : parent_id,
+		        is_route  : is_routeY,
+		        has_child : has_childY,
+		        index     : index,
+		        create    : create,
+		        edit      : edit,
+		        erase     : erase,
+		        _token    : token,
+		      },
+	    })
+      	.done(function (response) {
+	        if (response.success) {
+                $("div#MyModal").modal("hide");
+                notifYesAuto(response.message);
+                table.ajax.reload();
+	        }else{
+                notifNo(response.message);
+            }
+      	})
+        .fail(function (response) {
+          if(response.responseJSON.errors){
+                var values = '';
+                jQuery.each(response.responseJSON.errors, function (key, value) {
+                    values += value + "<br>"
+                });
+                notifNo(values);
+          }
+        });
+  	});
+
 
     function iconpicker(){
         $('.iconpicker').iconpicker({

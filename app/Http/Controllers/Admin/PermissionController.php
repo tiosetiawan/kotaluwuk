@@ -8,9 +8,18 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
 use App\Models\ListMenuPermission;
+use Illuminate\Support\Facades\DB;
 use DataTables;
 class PermissionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:permissions-index', ['only' => ['index']]);
+        $this->middleware('permission:permissions-store', ['only' => ['create', 'store']]);
+        $this->middleware('permission:permissions-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:permissions-erase', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -149,16 +158,17 @@ class PermissionController extends Controller
      */
     function generatePermission($data, $suffix = '-index', $role){
 
-        $data['name'] = strtolower($data['menu_name'] . $suffix);
-        $check = Permission::where('name', '=', $data['menu_name'] . $suffix)->first();
+        $data['name']   = strtolower($data['menu_name'] . $suffix);
+        $check          = Permission::where('name', '=', $data['menu_name'] . $suffix)->first();
 
         if ($check) {
             $permission = Permission::where('id', '=', $check->id)->update($data);
+            $this->assignPermissionToRoleUpdate($permission, $role);
         } else {
             $permission = Permission::create($data);
+            $this->assignPermissionToRoleInsert($permission, $role);
         }
       
-        $this->assignPermissionToRole($permission, $role);
     }
 
 
@@ -166,13 +176,33 @@ class PermissionController extends Controller
      * @param $permission
      * @param $role array
      */
-    protected function assignPermissionToRole($permission, $role)
+    protected function assignPermissionToRoleInsert($permission, $role)
     {
+        
         foreach($role as $rl){
-            $roles = Role::where('id', '=', $rl)->first();
+            
+            $roles       = Role::where('id', '=', $rl)->first();
             $permissions = Permission::where('id', '=', $permission->id)->first();
+
             $permissions->assignRole($roles->name);
             $this->assignPermissionToUser($permission, $roles);
+        }
+       
+    }
+
+     /**
+     * @param $permission
+     * @param $role array
+     */
+    protected function assignPermissionToRoleUpdate($permission, $role)
+    {
+        
+        foreach($role as $rl){
+            
+            $roles       = Role::where('id', '=', $rl)->first();
+            $permissions = Permission::where('id', '=', $permission)->first();
+            $permissions->assignRole($roles->name);
+            $this->assignPermissionToUser($permissions, $roles);
         }
        
     }
@@ -183,7 +213,7 @@ class PermissionController extends Controller
      */
     function assignPermissionToUser($permissions, $role){
 
-      
+     
         $users = User::leftJoin('model_has_roles', 'model_has_roles.model_id', 'users.id')
             ->select('users.*')
             ->where('model_has_roles.role_id', '=', $role->id)
@@ -237,7 +267,56 @@ class PermissionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'menu_name'  => 'required|string|max:255',
+            'icon'       => 'required|string',
+            'order_line' => 'required|string',
+            'role'       => 'required',
+        ]);
+
+       DB::beginTransaction();
+    //    try{
+            $data = [
+                'menu_name'  => $request->menu_name,
+                'route_name' => $request->route_name,
+                'icon'       => $request->icon,
+                'order_line' => $request->order_line,
+                'parent_id'  => ($request->parent_id) ? $request->parent_id : 0,
+                'has_route'  => ($request->is_route == "true") ? 'Y' : 'N',
+                'has_child'  => ($request->has_child == "true") ? 'Y' : 'N',
+            ];
+
+            $index  = $request->index;
+            $create = $request->create;
+            $edit   = $request->edit;
+            $erase  = $request->erase;
+            $role   = $request->role;
+
+            if($index == "true"){
+                $this->generatePermission($data, '-index',$role);
+            }
+            if($create == "true"){
+                $this->generatePermission($data, '-store',$role);
+            }
+            if($edit == "true"){
+                $this->generatePermission($data, '-edit',$role);
+            }
+            if($erase == "true"){
+                $this->generatePermission($data, '-erase',$role);
+            }
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => $request->username.' save successfully !',
+            ], 200);
+
+    //    }catch (\Exception $exception) {
+    //     DB::rollBack();
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => "Failed to save !"
+    //         ], 401);
+    //     }
     }
 
     /**

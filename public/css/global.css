@@ -227,7 +227,7 @@ body {
   padding-bottom: 5px;
 }
 .sidenav-dropdown>.active> a{
-  background-color: #cff6dd6f;
+  background-color: #e8eaed;
   color: #333 !important;
   border-radius: 10px;
 }
@@ -242,4 +242,8 @@ a.placeholder, button.bs-placeholder {
 
 .container-footer {
   width: auto;
+}
+
+.dropdown-item {
+  font-size: 10pt;
 }

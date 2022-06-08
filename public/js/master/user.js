@@ -71,6 +71,7 @@ $(document).ready(function () {
                 }
                 e.stopPropagation();
               });
+              $(".autocomplete").chosen();
 			$("div#MyModalFooter").html('<button type="submit" class="btn btn-outline-success btn-sm center-block" id="save_add_btn"><i class="bi bi-file-earmark-plus"></i> Save</button>');
 			$("div#MyModal").modal('show');
 		})

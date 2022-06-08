@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:users-index', ['only' => ['index']]);
+        $this->middleware('permission:users-store', ['only' => ['create', 'store']]);
+        $this->middleware('permission:users-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:users-erase', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *
