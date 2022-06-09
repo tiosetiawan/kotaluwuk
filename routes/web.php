@@ -30,15 +30,15 @@ Route::group(['middleware' => ['auth']], function () {
 Route::get('/dashboard', [DashboardController::class, 'index']);
 
 // get datatables
-Route::get('/configuration/user/json', [UserController::class, 'getTable']);
+Route::get('/configuration/users/json', [UserController::class, 'getTable']);
 Route::get('/configuration/roles/json', [RoleController::class, 'getTable']);
 Route::get('/configuration/permissions/json', [PermissionController::class, 'getTable']);
 
 // get data cherry
-Route::get('/configuration/user/cherry', [UserController::class, 'getUser']);
+Route::get('/configuration/users/cherry', [UserController::class, 'getUser']);
 
 // resource
-Route::resource('/configuration/user', UserController::class);
+Route::resource('/configuration/users', UserController::class);
 Route::resource('/configuration/roles', RoleController::class);
 Route::resource('/configuration/permissions', PermissionController::class);
 });

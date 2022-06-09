@@ -12,7 +12,7 @@
     {{-- end css --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
      {{-- toastr --}}
-     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
+     <link href="/lib/toastr/toastr.css" rel="stylesheet" />
 
     {{-- looping data css controller --}}
     @foreach ($data['css'] as $dt)
@@ -34,7 +34,7 @@
 {{-- end js --}}
 
 {{-- toastr js --}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+<script src="/lib/toastr/toastr.js"></script>
 
  {{-- looping data js controller --}}
 @foreach ($data['js'] as $dt)

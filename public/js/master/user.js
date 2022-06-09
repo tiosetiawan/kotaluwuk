@@ -2,7 +2,7 @@ $(document).ready(function () {
     var table = $('#tableuser').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "/configuration/user/json",
+        ajax: "/configuration/users/json",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
             {data: 'name', name: 'name'},
@@ -40,7 +40,7 @@ $(document).ready(function () {
                   $.ajax({
                     method: "GET",
                     cache: false,
-                    url: "/configuration/user/cherry",
+                    url: "/configuration/users/cherry",
                     data: {
                       username: username,
                     },
@@ -92,7 +92,7 @@ $(document).ready(function () {
         var token      = $("meta[name='csrf-token']").attr("content");
 	    $.ajax({
 		    method: "POST",
-		    url: '/configuration/user',
+		    url: '/configuration/users',
 		    cache: false,
 		    data: {
 		        username  : username,
@@ -130,7 +130,7 @@ $(document).ready(function () {
       var id = $(this).attr("data-id");
       $.ajax({
         method: "GET",
-        url   : "/configuration/user/"+ id + "/edit",
+        url   : "/configuration/users/"+ id + "/edit",
         cache : false,
         data  : { id_user: id },
       })
@@ -149,7 +149,7 @@ $(document).ready(function () {
               $.ajax({
                 method: "GET",
                 cache: false,
-                url: "/configuration/user/cherry",
+                url: "/configuration/users/cherry",
                 data: {
                   username: username,
                 },
@@ -202,7 +202,7 @@ $(document).ready(function () {
   
       $.ajax({
         method: "PUT",
-        url: "/configuration/user/" + id,
+        url: "/configuration/users/" + id,
         data: {
           id          : id,
           username    : username,
@@ -252,7 +252,7 @@ $(document).ready(function () {
         if (result.value) {
         $.ajax({
           type: "post",
-          url : "/configuration/user/"+ id,
+          url : "/configuration/users/"+ id,
           data: {
             id_user: id,
             name   : name,

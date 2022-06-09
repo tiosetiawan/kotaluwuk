@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <title>{{ $title }}</title>
 
     {{-- css --}}
@@ -19,7 +20,6 @@
         <link rel="stylesheet" href="{{ $dt }}">
     @endforeach
     
-    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 </head>
 
 <body class="d-flex flex-column">
