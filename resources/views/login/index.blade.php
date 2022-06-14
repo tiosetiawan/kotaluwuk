@@ -12,7 +12,7 @@
                     @csrf
                     <div class="login-box">
                         <div class="card-body">
-                            <h3 class="text-center mb-3"><a href=""><img width="40%" src="{{ env('APP_LOGO') }}"></a></h3>
+                            <h3 class="text-center mb-3"><a href=""><img width="40%" src="{{ asset(env('APP_LOGO')) }}"></a></h3>
                             <h5 class="text-center" style="font-weight: 600;">{{ env('APP_NAME') }}</h5>
                                 <div class="form-group mb-2">
                                     <label class="form-label" style="font-weight: 600;">Username</label>

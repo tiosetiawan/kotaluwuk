@@ -11,7 +11,7 @@ $(document).ready(function () {
 
         var kode = 1;
         $.ajax({
-            url: "/store",
+            url: window.url + "/store",
             type: "POST",
             dataType: "JSON",
             cache: false,
@@ -27,7 +27,7 @@ $(document).ready(function () {
                     toastr.success(response.message, '', {
                         timeOut: 1000,
                         onHidden: function () {
-                            window.location.href = '/dashboard';
+                            window.location.href = window.url + '/dashboard';
                         }
                     });
                 } else {

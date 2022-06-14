@@ -7,38 +7,39 @@
     <title>{{ $title }}</title>
 
     {{-- css --}}
-    <link href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap-icons.css">
+    <link href="{{ asset('/lib/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('/lib/bootstrap/css/bootstrap-icons.css') }}">
     {{-- end css --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
      {{-- toastr --}}
-     <link href="/lib/toastr/toastr.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
 
     {{-- looping data css controller --}}
     @foreach ($data['css'] as $dt)
-        <link rel="stylesheet" href="{{ $dt }}">
+        <link rel="stylesheet" href="{{asset($dt)}}">
     @endforeach
     
-    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
 </head>
 
 <body>
     @yield('container')
 </body>
 
+<script> window.url = "@php echo url('/') @endphp"</script>
 {{-- js --}}
-<script src="/lib/jquery/jquery.min.js"></script>
-<script src="/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/lib/sweetalert/sweetalert2.all.min.js"></script>
-<script src="/js/global.js"></script>
+<script src="{{ asset('/lib/jquery/jquery.min.js')  }}"></script>
+<script src="{{ asset('/lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('/lib/sweetalert/sweetalert2.all.min.js') }}"></script>
+<script src="{{ asset('/js/global.js') }}"></script>
 {{-- end js --}}
 
 {{-- toastr js --}}
-<script src="/lib/toastr/toastr.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
 
  {{-- looping data js controller --}}
 @foreach ($data['js'] as $dt)
-<script src="{{ $dt }}"></script>
+<script src="{{ asset($dt) }}"></script>
 @endforeach
 
 </html>

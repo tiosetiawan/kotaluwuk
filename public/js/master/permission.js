@@ -1,8 +1,8 @@
 $(document).ready(function () {
-    var table = $('#tableuser').DataTable({
+    var table = $('#table_permission').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "/configuration/permissions/json",
+        ajax:  window.url + "/configuration/permissions/json",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
             {data: 'menu_name', name: 'menu_name'},
@@ -25,16 +25,16 @@ $(document).ready(function () {
           ],
     });
 
-    
-
     $(document).on('click','#add_btn',function(e){
 		e.preventDefault();
+        loadingShow();
 		$.ajax({
 			method:"GET",
 			cache:false,
-			url: '/configuration/permissions/create'
+			url:  window.url + '/configuration/permissions/create'
 		})
 		.done(function(view) {
+            loadingHide();
 			$('#MyModalTitle').html('<b>Add</b>');
 			$('div.modal-dialog').addClass('modal-lg');
 			$("div#MyModalContent").html(view);
@@ -56,6 +56,7 @@ $(document).ready(function () {
 			$("div#MyModal").modal('show');
 		})
 		.fail(function(res){
+            loadingHide();
 			alert('Error Response !');
 			console.log("responseText", res.responseText);
 		});
@@ -63,6 +64,7 @@ $(document).ready(function () {
 
     $(document).on("click", "#save_add_btn", function (e) {
     	e.preventDefault();
+        loadingShow();
         var menu_name  = $("#menu_name").val();
         var route_name = $("#route_name").val();
         var icon       = $("#icon").val();
@@ -80,7 +82,7 @@ $(document).ready(function () {
         
 	    $.ajax({
 		    method: "POST",
-		    url: '/configuration/permissions',
+		    url:  window.url + '/configuration/permissions',
 		    cache: false,
 		    data: {
 		        menu_name : menu_name,
@@ -99,6 +101,7 @@ $(document).ready(function () {
 		      },
 	    })
       	.done(function (response) {
+              loadingHide();
 	        if (response.success) {
                 $("div#MyModal").modal("hide");
                 notifYesAuto(response.message);
@@ -108,6 +111,7 @@ $(document).ready(function () {
             }
       	})
         .fail(function (response) {
+            loadingHide();
           if(response.responseJSON.errors){
                 var values = '';
                 jQuery.each(response.responseJSON.errors, function (key, value) {
@@ -120,11 +124,12 @@ $(document).ready(function () {
 
     $(document).on("click", "#edit_btn", function (e) {
         e.preventDefault();
+        loadingShow();
         var id        = $(this).attr("data-id");
         var menu_name = $(this).attr("data-name");
         $.ajax({
           method: "GET",
-          url   : "/configuration/permissions/"+ id + "/edit",
+          url   :  window.url + "/configuration/permissions/"+ menu_name + "/edit",
           cache : false,
           data  : { 
               id_permission: id,
@@ -132,6 +137,7 @@ $(document).ready(function () {
             },
         })
           .done(function (view) {
+              loadingHide();
             $("#MyModalTitle").html("<b>Edit</b>");
             $("div.modal-dialog").addClass("modal-lg");
             $("div#MyModalContent").html(view);
@@ -154,6 +160,7 @@ $(document).ready(function () {
             $(".autocomplete").chosen();
           })
           .fail(function (response) {
+              loadingHide();
             if(response.responseJSON.errors){
               var values = '';
               jQuery.each(response.responseJSON.errors, function (key, value) {
@@ -167,6 +174,7 @@ $(document).ready(function () {
 
     $(document).on("click", "#save_edit_btn", function (e) {
     	e.preventDefault();
+        loadingShow();
         var menu_name  = $("#menu_name").val();
         var route_name = $("#route_name").val();
         var icon       = $("#icon").val();
@@ -184,7 +192,7 @@ $(document).ready(function () {
         
 	    $.ajax({
 		    method: "PUT",
-		    url: '/configuration/permissions/' + null,
+		    url:  window.url + '/configuration/permissions/' + null,
 		    cache: false,
 		    data: {
 		        menu_name : menu_name,
@@ -203,6 +211,7 @@ $(document).ready(function () {
 		      },
 	    })
       	.done(function (response) {
+              loadingHide();
 	        if (response.success) {
                 $("div#MyModal").modal("hide");
                 notifYesAuto(response.message);
@@ -212,6 +221,7 @@ $(document).ready(function () {
             }
       	})
         .fail(function (response) {
+            loadingHide();
           if(response.responseJSON.errors){
                 var values = '';
                 jQuery.each(response.responseJSON.errors, function (key, value) {
@@ -221,6 +231,57 @@ $(document).ready(function () {
           }
         });
   	});
+
+      $(document).on("click", "#delete_btn", function (e) {
+        e.preventDefault();
+      
+        var id    = $(this).attr("data-id");
+        var name  = $(this).attr("data-name");
+        var token = $("meta[name='csrf-token']").attr("content");
+        swal({
+            title: "You are sure ?",
+            text: "Permission data " + name + " will be deleted ?",
+            type: "question",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete !",
+            cancelButtonText: "No, cancel !",
+        }).then((result) => {
+            if (result.value) {
+                loadingShow();
+            $.ajax({
+              type: "post",
+              url :  window.url + "/configuration/permissions/"+ name,
+              data: {
+                id: id,
+                name   : name,
+                _token : token,
+                '_method': 'delete'
+                },
+            })
+                .done(function (response) {
+                    loadingHide();
+                if (response.success) {
+                    $("div#MyModal").modal("hide");
+                    notifYesAuto(response.message);
+                    table.ajax.reload();
+                  }else{
+                      notifNo(response.message);
+                  }
+                })
+                .fail(function (response) {
+                    loadingHide();
+                  if(response.responseJSON.errors){
+                    var values = '';
+                    jQuery.each(response.responseJSON.errors, function (key, value) {
+                        values += value + "<br>"
+                    });
+                    notifNo(values);
+                  }
+                  console.log("responseText", response.responseText);
+                });
+            }
+        });
+        });
 
 
     function iconpicker(){

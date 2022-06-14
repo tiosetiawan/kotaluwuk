@@ -9,7 +9,7 @@
         </div>
         <div class="card-body">
             <button id="add_btn" class="btn btn-outline-success btn-sm"><i class="bi bi-file-earmark-plus"></i> Add</button><hr>
-            <table class="table table-bordered" id="tableuser" style="width:100%">
+            <table class="table table-bordered" id="table_permission" style="width:100%">
                 <thead class="bg-light">
                     <tr>
                         <th width="50">No</th>

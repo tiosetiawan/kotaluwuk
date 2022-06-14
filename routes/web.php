@@ -23,7 +23,7 @@ Route::get('/', [LoginController::class, 'index'])->middleware('guest');
 // routing login
 Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
 Route::post('/store', [LoginController::class, 'store']);
-Route::post('/logout', [LoginController::class,'destroy']);
+Route::post('/logout', [LoginController::class,'destroy'])->name("logout");
 
 // routing auth akses
 Route::group(['middleware' => ['auth']], function () {
