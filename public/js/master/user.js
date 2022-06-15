@@ -42,7 +42,7 @@ $(document).ready(function () {
                 $.ajax({
                   method: "GET",
                   cache: false,
-                  url: window.url + "/configuration/users/cherry",
+                  url: window.url + "/configuration/cherry/user",
                   data: {
                     username: username,
                   },
@@ -157,7 +157,7 @@ $(document).ready(function () {
             $.ajax({
               method: "GET",
               cache: false,
-              url:  window.url + "/configuration/users/cherry",
+              url:  window.url + "/configuration/cherry/user",
               data: {
                 username: username,
               },
