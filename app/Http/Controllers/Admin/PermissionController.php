@@ -65,8 +65,8 @@ class PermissionController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    $actionBtn = "<a id='edit_btn' type='button' class='text-primary' data-name=".$row->menu_name." data-id=".$row->id." id='order_btn'><i class='bi bi-pencil-square'></i></a>
-                    <a id='delete_btn' type='button' class='text-danger' data-id=".$row->id." data-name=".$row->name." id='order_btn'><i class='bi bi-trash3'></i></a>";
+                    $actionBtn = "<a id='edit_btn' type='button' class='text-primary' data-name='".$row->menu_name."' data-id='".$row->id."' id='order_btn'><i class='bi bi-pencil-square'></i></a>
+                    <a id='delete_btn' type='button' class='text-danger' data-id='".$row->id."' data-name=".$row->menu_name." id='order_btn'><i class='bi bi-trash3'></i></a>";
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])
@@ -325,8 +325,20 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        //
+        $details = Permission::where("menu_name", "=", $request->name)->first();
+        // dd($details);
+        if ($details) {
+            $details->delete();
+            return response()->json([
+                'success' => true,
+                'message' => $request->input('name').' successfully deleted !',
+            ], 200);
+        }
+        return response()->json([
+            'success' => false,
+            'message' => "Failed to deleted !"
+        ], 401);
     }
 }

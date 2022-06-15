@@ -35,7 +35,7 @@ Route::get('/configuration/roles/json', [RoleController::class, 'getTable']);
 Route::get('/configuration/permissions/json', [PermissionController::class, 'getTable']);
 
 // get data cherry
-Route::get('/configuration/users/cherry', [UserController::class, 'getUser']);
+Route::get('/configuration/users/cherry{id}', [UserController::class, 'getUser']);
 
 // resource
 Route::resource('/configuration/users', UserController::class);

@@ -62,8 +62,8 @@ class UserController extends Controller
                     return $data->username;
                 })
                 ->addColumn('action', function($row){
-                    $actionBtn = "<a id='edit_btn' type='button' class='text-primary' data-id=".$row->id." id='order_btn'><i class='bi bi-pencil-square'></i></a>
-                    <a id='delete_btn' type='button' class='text-danger' data-id=".$row->id." data-name=".$row->name." id='order_btn'><i class='bi bi-trash3'></i></a>";
+                    $actionBtn = "<a id='edit_btn' type='button' class='text-primary' data-id='".$row->id."' id='order_btn'><i class='bi bi-pencil-square'></i></a>
+                    <a id='delete_btn' type='button' class='text-danger' data-id='".$row->id."' data-name='".$row->name."' id='order_btn'><i class='bi bi-trash3'></i></a>";
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])
