@@ -37,7 +37,6 @@ class LoginController extends Controller
         $password = $request->input('password');
 
         $user = User::where('username', $username)->first();
-    
         if(!$user){
             return response()->json([
                 'success' => false,
@@ -47,24 +46,7 @@ class LoginController extends Controller
 
         $role = Role::where('id', $user->role_id)->first();
         $user->assignRole($role->name);
-
-        //login cherry check
-        $response = Http::post(config('app.token_cherry'), [
-            'CommandName' => 'RequestToken',
-            'ModelCode' => 'AppUserAccount',
-            'UserName' => $username,
-            'Password' => $password,
-            'ParameterData' => [],
-        ]);
-
-        if (isset($response['Token'])) {
-            $user = $this->insertUser($response, $password);
-        }else{
-            return response()->json([
-                'success' => false,
-                'message' => $response['Message'],
-            ], 401);
-        } 
+        $user = $this->insertUser($user, $password);
 
         if(Auth::attempt($credentials)){
             $request->session()->regenerate();
@@ -80,19 +62,16 @@ class LoginController extends Controller
         }
    }
 
-    protected function insertUser($response, $password)
+    protected function insertUser($user, $password)
     {
         $data = [
-            'name'         => $response['Data']['Name'],
-            'token_cherry' => $response['Token'],
-            'username'     => $response['UserName'],
+            'name'         => $user->name,
+            'username'     => $user->username,
             'password'     => bcrypt($password),
-            'perusahaan'   => $response['Data']['Company'],
-            'divisi'       => $response['Data']['Organization'],
-            'email'        => $response['Data']['Email'],
+            'email'        => $user->email,
         ];
         
-        $user = User::where('username', '=', $response['UserName'])
+        $user = User::where('username', '=',  $user->username)
         ->update($data);
         return $user;
     }
