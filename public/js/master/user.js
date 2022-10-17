@@ -6,8 +6,6 @@ $(document).ready(function () {
       columns: [
           {data: 'DT_RowIndex', name: 'DT_RowIndex'},
           {data: 'name', name: 'name'},
-          {data: 'perusahaan', name: 'perusahaan'},
-          {data: 'divisi', name: 'divisi'},
           {data: 'username', name: 'username'},
           {data: 'email', name: 'email'},
           {
@@ -18,7 +16,7 @@ $(document).ready(function () {
           },
       ],
       columnDefs: [
-          { targets: [0, 1, 2,3,4,5,6], className: "text-center" },
+          { targets: [0, 1, 2,3,4], className: "text-center" },
         ],
   });
 
@@ -35,45 +33,8 @@ $(document).ready(function () {
     $('#MyModalTitle').html('<b>Add</b>');
     $('div.modal-dialog').addClass('modal-lg');
     $("div#MyModalContent").html(view);
-          $("#username").keyup(function (e) {
-              e.preventDefault();
-              username = $("#username").val();
-              if (username.length >= 8) {
-                $.ajax({
-                  method: "GET",
-                  cache: false,
-                  url: window.url + "/configuration/cherry/user",
-                  data: {
-                    username: username,
-                  },
-                })
-                  .done(function (result) {
-                    if (result.data !== null) {
-                      $("#name").val(result.data[0].Name);
-                      $("#perusahaan").val(result.data[0].Company);
-                      $("#email").val(result.data[0].OfficeEmailAddress);
-                      $("#divisi").val(result.data[0].Department);
-                    } else {
-                      $("#name").val("");
-                      $("#perusahaan").val("");
-                      $("#divisi").val("");
-                      $("#email").val("");
-                    }
-                  })
-                  .fail(function (response) {
-                    if(response.responseJSON.errors){
-                      var values = '';
-                      jQuery.each(response.responseJSON.errors, function (key, value) {
-                          values += value + "<br>"
-                      });
-                      notifNo(values);
-                    }
-                    console.log("responseText", response.responseText);
-                  });
-              }
-              e.stopPropagation();
-            });
-            $(".autocomplete").chosen();
+          
+    $(".autocomplete").chosen();
     $("div#MyModalFooter").html('<button type="submit" class="btn btn-outline-success btn-sm center-block" id="save_add_btn"><i class="bi bi-file-earmark-plus"></i> Save</button>');
     $("div#MyModal").modal('show');
   })
@@ -90,8 +51,6 @@ $(document).ready(function () {
       var username   = $("#username").val();
       var name       = $("#name").val();
       var email      = $("#email").val();
-      var perusahaan = $("#perusahaan").val();
-      var divisi     = $("#divisi").val();
       var role_id    = $("#role_id").val();
       var token      = $("meta[name='csrf-token']").attr("content");
     $.ajax({
@@ -102,8 +61,6 @@ $(document).ready(function () {
           username  : username,
           name      : name,
           email     : email,
-          perusahaan: perusahaan,
-          divisi    : divisi,
           role_id   : role_id,
           _token    : token,
         },
@@ -150,38 +107,7 @@ $(document).ready(function () {
           '<button type="submit" class="btn btn-outline-success btn-sm center-block" id="save_edit_btn">Edit</button>'
         );
         $("div#MyModal").modal("show");
-        $("#username").keyup(function (e) {
-          e.preventDefault();
-          username = $("#username").val();
-          if (username.length >= 8) {
-            $.ajax({
-              method: "GET",
-              cache: false,
-              url:  window.url + "/configuration/cherry/user",
-              data: {
-                username: username,
-              },
-            })
-              .done(function (result) {
-                if (result.data !== null) {
-                  $("#name").val(result.data[0].Name);
-                  $("#perusahaan").val(result.data[0].Company);
-                  $("#email").val(result.data[0].OfficeEmailAddress);
-                  $("#divisi").val(result.data[0].Department);
-                } else {
-                  $("#name").val("");
-                  $("#perusahaan").val("");
-                  $("#divisi").val("");
-                  $("#email").val("");
-                }
-              })
-              .fail(function (res) {
-                alert("Error Response !");
-                console.log("responseText", res.responseText);
-              });
-          }
-          e.stopPropagation();
-        });
+      
         $(".autocomplete").chosen();
       })
       .fail(function (response) {
@@ -205,8 +131,6 @@ $(document).ready(function () {
     var username     = $("#username").val();
     var name         = $("#name").val();
     var email        = $("#email").val();
-    var perusahaan   = $("#perusahaan").val();
-    var divisi       = $("#divisi").val();
     var role_id      = $("#role_id").val();
     var token        = $("meta[name='csrf-token']").attr("content");
 
@@ -219,8 +143,6 @@ $(document).ready(function () {
         username_old: username_old,
         name        : name,
         email       : email,
-        perusahaan  : perusahaan,
-        divisi      : divisi,
         role_id     : role_id,
         _token      : token
       },

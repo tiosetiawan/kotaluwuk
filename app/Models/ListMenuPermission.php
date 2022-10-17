@@ -9,6 +9,6 @@ class ListMenuPermission extends Model
 {
     use HasFactory;
 
-    protected $connection = 'sqlsrv';
+    protected $connection = 'mysql';
     protected $table = 'list_menu_permissions';
 }

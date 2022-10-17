@@ -1,7 +1,7 @@
 <nav class="sidenav" data-sidenav data-sidenav-toggle="#sidenav-toggle">
 	<div class="sidenav-brand ml-5">
 		<a class="toggle back" id="sidenav-toggle"><i class="fa fa-angle-left"></i></a>
-		<a class="avatar-username" href="{{ url('/dashboard') }}"> <img class="img-responsive logo-sidebar center-block" width="80" height="30" src="{{ asset('/img/logo-imip.png') }}"></a>
+		<a class="avatar-username" href="{{ url('/dashboard') }}"> <img class="img-responsive logo-sidebar center-block" width="80" height="30" src="{{ asset('/img/kotaluwuk-small.png') }}"></a>
 	</div>
 
 	<ul class="navbar-nav sidenav-menu mt-2">

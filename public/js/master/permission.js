@@ -9,7 +9,7 @@ $(document).ready(function () {
             {data: 'icon', name: 'icon'},
             {data: 'route_name', name: 'route_name'},
             {data: 'order_line', name: 'order_line'},
-            {data: 'index', name: 'index'},
+            {data: 'index1', name: 'index1'},
             {data: 'store', name: 'store'},
             {data: 'edits', name: 'edits'},
             {data: 'erase', name: 'erase'},

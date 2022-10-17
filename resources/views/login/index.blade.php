@@ -12,8 +12,9 @@
                     @csrf
                     <div class="login-box">
                         <div class="card-body">
-                            <h3 class="text-center mb-3"><a href=""><img width="40%" src="{{ asset(env('APP_LOGO')) }}"></a></h3>
-                            <h5 class="text-center" style="font-weight: 600;">{{ env('APP_NAME') }}</h5>
+                            <div class="mt-5"></div>
+                            <h3 class="text-left mb-3"><a href=""><img width="50%" src="{{ asset(env('APP_LOGO')) }}"></a></h3>
+                            <p class="text-left" style="font-size: 8pt;">Login Dashboard. </p>
                                 <div class="form-group mb-2">
                                     <label class="form-label" style="font-weight: 600;">Username</label>
                                     <input class="form-control" type="text" placeholder="Username" name="username" id="username" required>
@@ -37,9 +38,8 @@
                 {{-- </form> --}}
                 <div class="container text-footer">
                     <hr>
-                    <p align="center">If you have problem in loggin in, please contact our IT
-                        Application Development Team 9909</p>
-                    <a href="https://imip.co.id/" class="text-success text-decoration-none"><p align="center"> {{ env('APP_FOOTER') }} </p></a>
+                    <p align="center">Let's explore Banggai</p>
+                    <a href="https://kotaluwuk.com/" class="text-success text-decoration-none"><p align="center"> {{ env('APP_FOOTER') }} </p></a>
                 </div>
             </div>
         </div>

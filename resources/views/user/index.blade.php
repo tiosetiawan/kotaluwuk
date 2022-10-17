@@ -14,8 +14,6 @@
                     <tr>
                         <th>No</th>
                         <th>Name</th>
-                        <th>Company</th>
-                        <th>Department</th>
                         <th>Username</th>
                         <th>Email</th>
                         <th>Action</th>

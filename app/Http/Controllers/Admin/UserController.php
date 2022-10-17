@@ -107,8 +107,6 @@ class UserController extends Controller
             'username'   => 'required|string|unique:users',
             'name'       => 'required|string|max:255',
             'email'      => 'required|string',
-            'perusahaan' => 'required|string',
-            'divisi'     => 'required|string',
             'role_id'    => 'required|string',
         ]);
         DB::beginTransaction();
@@ -117,8 +115,6 @@ class UserController extends Controller
             'name'       => $data['name'],
             'email'      => $data['email'],
             'password'   => '',
-            'perusahaan' => $data['perusahaan'],
-            'divisi'     => $data['divisi'],
             'role_id'    => $data['role_id'],
         ]);
 
@@ -182,8 +178,6 @@ class UserController extends Controller
             'username'   => 'required|string',
             'name'       => 'required|string|max:255',
             'email'      => 'required|string',
-            'perusahaan' => 'required|string',
-            'divisi'     => 'required|string',
             'role_id'    => 'required|string',
         ];
        
